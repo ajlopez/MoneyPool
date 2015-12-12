@@ -41,10 +41,29 @@ function isDateTimeString(text) {
     return text.match(/\d\d\d\d-\d\d-\d\d\s\d\d:\d\d:\d\d/) != null;
 }
 
+function toDate(text) {
+    var parts = text.split('-');
+    
+    return new Date(parts[0], parts[1] - 1, parts[2]);
+}
+
+function calculateDates(fromDate, days, nperiods) {
+    var date = toDate(fromDate);
+    var result = [];
+    
+    for (var k = 0; k < nperiods; k++) {
+        date.setDate(date.getDate() + days);
+        result.push(toNormalDateString(date));
+    }
+    
+    return result;
+}
+
 module.exports = {
     toNormalDateString: toNormalDateString,
     toNormalDateTimeString: toNormalDateTimeString,
     isDateTimeString: isDateTimeString,
-    nowString: function () { return toNormalDateTimeString(new Date()); }
+    nowString: function () { return toNormalDateTimeString(new Date()); },
+    calculateDates: calculateDates
 }
 
