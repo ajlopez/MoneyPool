@@ -12,7 +12,7 @@ function toNormalDateString(date) {
         day = "0" + day;
         
     return year + "-" + month + "-" + day;
-};
+}
 
 function toNormalDateTimeString(datetime) {
     var datestr = toNormalDateString(datetime);
@@ -29,11 +29,22 @@ function toNormalDateTimeString(datetime) {
         second = "0" + second;
         
     return datestr + " " + hour + ":" + minute + ":" + second;
-};
+}
+
+function isDateTimeString(text) {
+    if (!text)
+        return false;
+        
+    if (text.length != 19)
+        return false;
+        
+    return text.match(/\d\d\d\d-\d\d-\d\d\s\d\d:\d\d:\d\d/) != null;
+}
 
 module.exports = {
     toNormalDateString: toNormalDateString,
     toNormalDateTimeString: toNormalDateTimeString,
+    isDateTimeString: isDateTimeString,
     nowString: function () { return toNormalDateTimeString(new Date()); }
 }
 
