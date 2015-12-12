@@ -21,7 +21,7 @@ exports['list no users'] = function (test) {
         render: function (name, model) {
             test.ok(name);
             test.ok(model);
-            test.equal(name, 'userList');
+            test.equal(name, 'admin/userList');
             test.ok(model.users);
             test.ok(Array.isArray(model.users));
             test.equal(model.users.length, 0);
@@ -42,7 +42,7 @@ exports['add user'] = function (test) {
         render: function (name, model) {
             test.ok(name);
             test.ok(model);
-            test.equal(name, 'userView');
+            test.equal(name, 'admin/userView');
             
             test.equal(typeof model, 'object');
             test.equal(typeof model.user, 'object');
@@ -80,7 +80,7 @@ exports['list users'] = function (test) {
         render: function (name, model) {
             test.ok(name);
             test.ok(model);
-            test.equal(name, 'userList');
+            test.equal(name, 'admin/userList');
             test.ok(model.users);
             test.ok(Array.isArray(model.users));
             test.equal(model.users.length, 1);
