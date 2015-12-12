@@ -33,6 +33,7 @@ function toNormalDateTimeString(datetime) {
 
 module.exports = {
     toNormalDateString: toNormalDateString,
-    toNormalDateTimeString: toNormalDateTimeString
+    toNormalDateTimeString: toNormalDateTimeString,
+    nowString: function () { return toNormalDateTimeString(new Date()); }
 }
 
