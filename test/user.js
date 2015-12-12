@@ -88,3 +88,22 @@ exports['get users'] = function (test) {
     });
 };
 
+exports['update user name'] = function (test) {
+    test.async();
+    
+    userService.updateUser(adamId, { name: 'Adam Smith' }, function (err, id) {
+        test.ok(!err);
+        test.ok(id);
+        test.equal(id, adamId);
+        
+        userService.getUserById(adamId, function (err, user) {
+            test.ok(!err);
+            test.ok(user);
+            test.equal(user.id, adamId);
+            test.equal(user.name, 'Adam Smith');
+            test.equal(user.username, 'adam');
+            
+            test.done();
+        });
+    });
+};

@@ -24,12 +24,19 @@ function getUsers(cb) {
     cb(null, store.find());
 }
 
+function updateUser(id, data, cb) {
+    store.update(id, data);
+    cb(null, id);
+}
+
 module.exports = {
     addUser: addUser,
     
     getUserById: getUserById,
     getUserByUsername: getUserByUsername,
     
-    getUsers: getUsers
+    getUsers: getUsers,
+    
+    updateUser: updateUser
 };
 
