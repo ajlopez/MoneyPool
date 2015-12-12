@@ -3,6 +3,15 @@ var userService = require('../../services/user');
 
 var adamId;
 
+exports['clear users'] = function (test) {
+    test.async();
+    
+    userService.clearUsers(function (err, data) {
+        test.ok(!err);
+        test.done();
+    });
+};
+
 exports['add user'] = function (test) {
     test.async();
     

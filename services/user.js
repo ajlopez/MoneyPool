@@ -3,6 +3,11 @@ var ostore = require('ostore');
 
 var store = ostore.createStore('users');
 
+function clearUsers(cb) {
+    store = ostore.createStore('users');
+    cb(null, null);
+};
+
 function addUser(user, cb) {
     cb(null, store.add(user));
 };
@@ -37,6 +42,8 @@ module.exports = {
     
     getUsers: getUsers,
     
-    updateUser: updateUser
+    updateUser: updateUser,
+    
+    clearUsers: clearUsers
 };
 
