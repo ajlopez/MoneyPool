@@ -14,7 +14,7 @@ exports['clear users'] = function (test) {
     });
 };
 
-exports['get no users'] = function (test) {
+exports['list no users'] = function (test) {
     test.async();
     
     var res = {
@@ -32,7 +32,7 @@ exports['get no users'] = function (test) {
     
     var req = { };
     
-    userController.getUsers(req, res);
+    userController.listUsers(req, res);
 };
 
 exports['add user'] = function (test) {
@@ -73,7 +73,7 @@ exports['add user'] = function (test) {
     userController.addUser(req, res);
 };
 
-exports['get users'] = function (test) {
+exports['list users'] = function (test) {
     test.async();
     
     var res = {
@@ -93,5 +93,6 @@ exports['get users'] = function (test) {
     
     var req = { };
     
-    userController.getUsers(req, res);
+    userController.listUsers(req, res);
 };
+

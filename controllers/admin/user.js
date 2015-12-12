@@ -1,7 +1,7 @@
 
 var userService = require('../../services/user');
 
-function getUsers(req, res) {
+function listUsers(req, res) {
     userService.getUsers(function (err, users) {
         if (err)
             return res.render('error', { error: err });
@@ -25,6 +25,6 @@ function addUser(req, res) {
 }
 
 module.exports = {
-    getUsers: getUsers,
+    listUsers: listUsers,
     addUser: addUser
 };
