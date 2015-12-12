@@ -1,5 +1,6 @@
 
 var loanService = require('../../services/loan');
+var dates = require('../../utils/dates');
 
 var loanId;
 
@@ -33,6 +34,8 @@ exports['get loan by id'] = function (test) {
         
         test.equal(loan.user, 1);
         test.equal(loan.id, loanId);
+        test.equal(loan.status, 'pending');
+        test.ok(dates.isDateTimeString(loan.created));
         
         test.done();
     });

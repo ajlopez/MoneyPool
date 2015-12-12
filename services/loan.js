@@ -1,5 +1,6 @@
 
 var ostore = require('ostore');
+var dates = require('../utils/dates');
 
 var store = ostore.createStore('loans');
 
@@ -9,6 +10,8 @@ function clearLoans(cb) {
 };
 
 function addLoan(loan, cb) {
+    loan.status = 'pending';
+    loan.created = dates.nowString();
     cb(null, store.add(loan));
 };
 
