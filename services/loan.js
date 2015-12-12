@@ -10,7 +10,7 @@ function clearLoans(cb) {
 };
 
 function addLoan(loan, cb) {
-    loan.status = 'pending';
+    loan.status = 'open';
     loan.created = dates.nowString();
     cb(null, store.add(loan));
 };
