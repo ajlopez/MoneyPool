@@ -1,6 +1,7 @@
 
 var loanService = require('../../services/loan');
 var dates = require('../../utils/dates');
+var async = require('simpleasync');
 
 var loanId;
 
@@ -118,3 +119,29 @@ exports['update loan data'] = function (test) {
     });
 };
 
+exports['add and reject loan'] = function (test) {
+    test.async();
+    
+    var loanId;
+    
+    async()
+    .then(function (data, next) {
+        loanService.addLoan({ user: 1, amount: 1000 }, next);
+    })
+    .then(function (id, next) {
+        loanId = id;
+        
+        loanService.rejectLoan(loanId, next);
+    })
+    .then(function (data, next) {
+        loanService.getLoanById(loanId, next);
+    })
+    .then(function (data, next) {
+        test.ok(data);
+        test.equal(data.id, loanId);
+        test.equal(data.status, 'rejected');
+        test.ok(dates.isDateTimeString(data.rejected));
+        test.done();
+    })
+    .run();
+};

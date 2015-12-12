@@ -37,6 +37,10 @@ function updateLoan(id, data, cb) {
     cb(null, id);
 }
 
+function rejectLoan(id, cb) {
+    updateLoan(id, { status: 'rejected', rejected: dates.nowString() }, cb);
+}
+
 module.exports = {
     addLoan: addLoan,
     
@@ -46,6 +50,7 @@ module.exports = {
     getLoansByUser: getLoansByUser,
     
     updateLoan: updateLoan,
+    rejectLoan: rejectLoan,
     
     clearLoans: clearLoans
 };
