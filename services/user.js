@@ -1,6 +1,6 @@
 
-function addUser(user) {
-    return 1;
+function addUser(user, cb) {
+    cb(null, 1);
 };
 
 module.exports = {

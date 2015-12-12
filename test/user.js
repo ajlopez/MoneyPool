@@ -2,7 +2,11 @@
 var userService = require('../services/user');
 
 exports['add user'] = function (test) {
-    var id = userService.addUser({ name: 'Adam' });
+    test.async();
     
-    test.ok(id);
+    userService.addUser({ name: 'Adam' }, function (err, id) {
+        test.ok(!err);
+        test.ok(id);
+        test.done();
+    });
 };
