@@ -59,6 +59,17 @@ exports['get user by username'] = function (test) {
     });
 };
 
+exports['get user by unknown username'] = function (test) {
+    test.async();
+    
+    userService.getUserByUsername('foo', function (err, user) {
+        test.ok(!err);
+        test.strictEqual(user, null);
+        
+        test.done();
+    });
+};
+
 exports['get users'] = function (test) {
     test.async();
     

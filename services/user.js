@@ -13,8 +13,11 @@ function getUserById(id, cb) {
 
 function getUserByUsername(username, cb) {
     var users = store.find({ username: username });
-    
-    cb(null, users[0]);
+
+    if (!users || !users.length)
+        cb(null, null);
+    else
+        cb(null, users[0]);
 }
 
 function getUsers(cb) {
