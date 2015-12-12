@@ -29,3 +29,21 @@ exports['get user by id'] = function (test) {
         test.done();
     });
 };
+
+exports['get users'] = function (test) {
+    test.async();
+    
+    userService.getUsers(function (err, users) {
+        test.ok(!err);
+        test.ok(users);
+        test.ok(Array.isArray(users));
+        test.ok(users.length);
+        test.equal(users.length, 1);
+        
+        test.equal(users[0].name, 'Adam');
+        test.equal(users[0].id, adamId);
+        
+        test.done();
+    });
+};
+

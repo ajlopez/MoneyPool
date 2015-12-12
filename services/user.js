@@ -11,8 +11,13 @@ function getUserById(id, cb) {
     cb(null, store.get(id));
 }
 
+function getUsers(cb) {
+    cb(null, store.find());
+}
+
 module.exports = {
     addUser: addUser,
-    getUserById: getUserById
+    getUserById: getUserById,
+    getUsers: getUsers
 };
 
