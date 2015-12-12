@@ -35,6 +35,7 @@ exports['get loan by id'] = function (test) {
         test.equal(loan.user, 1);
         test.equal(loan.id, loanId);
         test.equal(loan.status, 'open');
+        test.equal(loan.currency, 'ARS');
         test.ok(dates.isDateTimeString(loan.created));
         
         test.done();

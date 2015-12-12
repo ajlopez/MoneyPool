@@ -10,7 +10,10 @@ function clearLoans(cb) {
 };
 
 function addLoan(loan, cb) {
-    loan.status = 'open';
+    if (!loan.status)
+        loan.status = 'open';
+    if (!loan.currency)
+        loan.currency = 'ARS';
     loan.created = dates.nowString();
     cb(null, store.add(loan));
 };
