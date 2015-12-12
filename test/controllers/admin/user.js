@@ -2,6 +2,9 @@
 var userController = require('../../../controllers/admin/user');
 var userService = require('../../../services/user');
 
+var adamId;
+var adam;
+
 exports['clear users'] = function (test) {
     test.async();
     
@@ -19,8 +22,9 @@ exports['get no users'] = function (test) {
             test.ok(name);
             test.ok(model);
             test.equal(name, 'userList');
-            test.ok(Array.isArray(model));
-            test.equal(model.length, 0);
+            test.ok(model.users);
+            test.ok(Array.isArray(model.users));
+            test.equal(model.users.length, 0);
             
             test.done();
         }
@@ -49,6 +53,9 @@ exports['add user'] = function (test) {
             test.equal(model.user.genre, req.body.genre);
             test.equal(model.user.age, req.body.age);
             
+            adamId = model.user.id;
+            adam = model.user;
+            
             test.done();
         }
     };
@@ -66,3 +73,25 @@ exports['add user'] = function (test) {
     userController.addUser(req, res);
 };
 
+exports['get users'] = function (test) {
+    test.async();
+    
+    var res = {
+        render: function (name, model) {
+            test.ok(name);
+            test.ok(model);
+            test.equal(name, 'userList');
+            test.ok(model.users);
+            test.ok(Array.isArray(model.users));
+            test.equal(model.users.length, 1);
+            
+            test.deepEqual(model.users[0], adam);
+            
+            test.done();
+        }
+    };
+    
+    var req = { };
+    
+    userController.getUsers(req, res);
+};

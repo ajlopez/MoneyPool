@@ -2,7 +2,12 @@
 var userService = require('../../services/user');
 
 function getUsers(req, res) {
-    res.render('userList', []);
+    userService.getUsers(function (err, users) {
+        if (err)
+            return res.render('error', { error: err });
+            
+        res.render('userList', { users: users });
+    });
 }
 
 function addUser(req, res) {
