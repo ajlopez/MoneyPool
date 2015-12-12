@@ -1,5 +1,5 @@
 
-var userService = require('../services/user');
+var userService = require('../../services/user');
 
 var adamId;
 
