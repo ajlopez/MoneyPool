@@ -14,6 +14,25 @@ function toNormalDateString(date) {
     return year + "-" + month + "-" + day;
 };
 
+function toNormalDateTimeString(datetime) {
+    var datestr = toNormalDateString(datetime);
+    
+    var hour = datetime.getHours();
+    var minute = datetime.getMinutes();
+    var second = datetime.getSeconds();
+    
+    if (hour < 10)
+        hour = "0" + hour;
+    if (minute < 10)
+        minute = "0" + minute;
+    if (second < 10)
+        second = "0" + second;
+        
+    return datestr + " " + hour + ":" + minute + ":" + second;
+};
+
 module.exports = {
-    toNormalDateString: toNormalDateString
+    toNormalDateString: toNormalDateString,
+    toNormalDateTimeString: toNormalDateTimeString
 }
+
