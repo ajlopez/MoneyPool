@@ -18,6 +18,7 @@
     "simplelists": "0.0.5"
   },
   "devDependencies": {
+    "ostore": "0.0.5",
     "simpleunit": "0.0.7"
   }
 }
