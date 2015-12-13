@@ -15,10 +15,10 @@
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0",
     "simpleasync": "0.0.6",
-    "simplelists": "0.0.5"
+    "simplelists": "0.0.5",
+    "ostore": "0.0.6"
   },
   "devDependencies": {
-    "ostore": "0.0.5",
     "simpleunit": "0.0.7"
   }
 }
