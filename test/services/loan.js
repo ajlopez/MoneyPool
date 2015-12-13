@@ -1,9 +1,12 @@
 
 var loanService = require('../../services/loan');
+var userService = require('../../services/user');
 var dates = require('../../utils/dates');
 var async = require('simpleasync');
 
 var loanId;
+var adamId;
+var eveId;
 
 exports['clear loans'] = function (test) {
     test.async();
@@ -14,10 +17,41 @@ exports['clear loans'] = function (test) {
     });
 };
 
+exports['clear users'] = function (test) {
+    test.async();
+    
+    userService.clearUsers(function (err, data) {
+        test.ok(!err);
+        test.done();
+    });
+};
+
+exports['create loan user'] = function (test) {
+    test.async();
+    
+    userService.newUser({ username: 'adam', firstName: 'Adam', lastName: 'Paradise' }, function (err, data) {
+        test.ok(!err);
+        test.ok(data);
+        adamId = data;
+        test.done();
+    });
+};
+
+exports['create investor user'] = function (test) {
+    test.async();
+    
+    userService.newUser({ username: 'eve', firstName: 'Eve', lastName: 'Paradise' }, function (err, data) {
+        test.ok(!err);
+        test.ok(data);
+        eveId = data;
+        test.done();
+    });
+};
+
 exports['new loan'] = function (test) {
     test.async();
     
-    loanService.newLoan({ user: 1, amount: 1000 }, function (err, id) {
+    loanService.newLoan({ user: adamId, amount: 1000 }, function (err, id) {
         test.ok(!err);
         test.ok(id);
         loanId = id;
@@ -33,7 +67,7 @@ exports['get loan by id'] = function (test) {
         test.ok(loan);
         test.equal(typeof loan, 'object');
         
-        test.equal(loan.user, 1);
+        test.equal(loan.user, adamId);
         test.equal(loan.id, loanId);
         test.equal(loan.status, 'open');
         test.equal(loan.currency, 'ARS');
@@ -92,7 +126,7 @@ exports['get loans'] = function (test) {
         test.ok(Array.isArray(loans));
         test.equal(loans.length, 1);
         
-        test.equal(loans[0].user, 1);
+        test.equal(loans[0].user, adamId);
         test.equal(loans[0].id, loanId);
         
         test.done();
@@ -112,7 +146,7 @@ exports['update loan data'] = function (test) {
             test.ok(loan);
             test.equal(loan.id, loanId);
             test.equal(loan.name, 'A loan');
-            test.equal(loan.user, 1);
+            test.equal(loan.user, adamId);
             
             test.done();
         });
