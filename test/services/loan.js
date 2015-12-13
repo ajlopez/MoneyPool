@@ -71,6 +71,8 @@ exports['get loan by id'] = function (test) {
         test.equal(loan.id, loanId);
         test.equal(loan.status, 'open');
         test.equal(loan.currency, 'ARS');
+        test.equal(loan.order, 1);
+        test.equal(loan.code, 'adam-0001');
         test.ok(dates.isDateTimeString(loan.created));
         
         test.done();

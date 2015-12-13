@@ -1,8 +1,21 @@
 
 var ostore = require('ostore');
+var async = require('simpleasync');
 var dates = require('../utils/dates');
+var strings = require('../utils/strings');
 
 var store = ostore.createStore('loans');
+
+function getMaxOrder(loans) {
+    var maxorder = 0;
+    
+    loans.forEach(function (loan) {
+        if (loan.order && loan.order > maxorder)
+            maxorder = loan.order;
+    });
+    
+    return maxorder;
+}
 
 function clearLoans(cb) {
     store = ostore.createStore('loans');
@@ -15,7 +28,31 @@ function newLoan(loan, cb) {
     if (!loan.currency)
         loan.currency = 'ARS';
     loan.created = dates.nowString();
-    cb(null, store.add(loan));
+        
+    var uservice = require('./user');
+    var user;
+    var uloans;
+    
+    async()
+    .then(function (data, next) {
+        uservice.getUserById(loan.user, next);
+    })
+    .then(function (data, next) {
+        user = data;
+        getLoansByUser(loan.user, next);
+    })
+    .then(function (data, next) {
+        uloans = data;
+        getLoansByUser(loan.user, next);
+    })
+    .then(function (data, next) {
+        var maxorder = getMaxOrder(data);
+        loan.order = maxorder + 1;
+        loan.code = user.username + '-' + strings.fillZeroes(loan.order, 4);
+        cb(null, store.add(loan));
+    })
+    .run();
+    
 };
 
 function getLoanById(id, cb) {
