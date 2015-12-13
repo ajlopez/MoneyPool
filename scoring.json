@@ -1,0 +1,1 @@
+{    'A': {        description: 'Nivel A'.        monthlyRate: 0.5    },    'B': {        description: 'Nivel B'.        monthlyRate: 1.0    },    'C': {        description: 'Nivel C'.        monthlyRate: 1.5    },    'D': {        description: 'Nivel D'.        monthlyRate: 2.0    },    'E': {        description: 'Nivel E'.        monthlyRate: 2.5    }}
