@@ -1,11 +1,13 @@
 
-var ostore = require('ostore');
+"use strict"
+
+var db = require('../utils/db');
 var dates = require('../utils/dates');
 
-var store = ostore.createStore('movements');
+var store = db.createStore('movements');
 
 function clearMovements(cb) {
-    store = ostore.createStore('movements');
+    store = db.createStore('movements');
     cb(null, null);
 };
 
@@ -13,32 +15,27 @@ function newMovement(movement, cb) {
     if (!movement.currency)
         movement.currency = 'ARS';
     movement.datetime = dates.nowString();
-    cb(null, store.add(movement));
+    store.add(movement, cb);
 };
 
 function getMovementById(id, cb) {
-    cb(null, store.get(id));
+    store.get(id, cb);
 }
 
 function getMovementsByUser(userId, cb) {
-    var movements = store.find({ user: userId });
-
-    cb(null, movements);
+    store.find({ user: userId }, cb);
 }
 
 function getMovementsByLoan(loanId, cb) {
-    var movements = store.find({ loan: loanId });
-
-    cb(null, movements);
+    store.find({ loan: loanId }, cb);
 }
 
 function getMovements(cb) {
-    cb(null, store.find());
+    store.find(cb);
 }
 
 function updateMovement(id, data, cb) {
-    store.update(id, data);
-    cb(null, id);
+    store.update(id, data, cb);
 }
 
 module.exports = {

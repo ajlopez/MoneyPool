@@ -133,10 +133,8 @@ exports['get movements'] = function (test) {
 exports['update movement data'] = function (test) {
     test.async();
     
-    movementService.updateMovement(movementId, { description: 'A movement' }, function (err, id) {
+    movementService.updateMovement(movementId, { description: 'A movement' }, function (err, data) {
         test.ok(!err);
-        test.ok(id);
-        test.equal(id, movementId);
         
         movementService.getMovementById(movementId, function (err, movement) {
             test.ok(!err);
