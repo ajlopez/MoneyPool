@@ -1,12 +1,13 @@
 
+var db = require('../../utils/db');
 var userService = require('../../services/user');
 
 var adamId;
 
-exports['clear users'] = function (test) {
+exports['clear data'] = function (test) {
     test.async();
     
-    userService.clearUsers(function (err, data) {
+    db.clear(function (err, data) {
         test.ok(!err);
         test.done();
     });
