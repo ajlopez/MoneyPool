@@ -140,10 +140,8 @@ exports['get loans'] = function (test) {
 exports['update loan data'] = function (test) {
     test.async();
     
-    loanService.updateLoan(loanId, { name: 'A loan' }, function (err, id) {
+    loanService.updateLoan(loanId, { name: 'A loan' }, function (err, data) {
         test.ok(!err);
-        test.ok(id);
-        test.equal(id, loanId);
         
         loanService.getLoanById(loanId, function (err, loan) {
             test.ok(!err);

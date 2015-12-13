@@ -1,5 +1,5 @@
 
-var ostore = require('ostore');
+var db = require('../utils/db');
 var async = require('simpleasync');
 var dates = require('../utils/dates');
 var strings = require('../utils/strings');
@@ -7,7 +7,7 @@ var strings = require('../utils/strings');
 var noteService = require('./note');
 var scoring = require('../scoring.json');
 
-var store = ostore.createStore('loans');
+var store = db.createStore('loans');
 
 function getMaxOrder(loans) {
     var maxorder = 0;
@@ -21,7 +21,7 @@ function getMaxOrder(loans) {
 }
 
 function clearLoans(cb) {
-    store = ostore.createStore('loans');
+    store = db.createStore('loans');
     cb(null, null);
 };
 
@@ -62,7 +62,7 @@ function newLoan(loan, cb) {
         var maxorder = getMaxOrder(data);
         loan.order = maxorder + 1;
         loan.code = user.username + '-' + strings.fillZeroes(loan.order, 4);
-        cb(null, store.add(loan));
+        store.add(loan, cb);
     })
     .run();
     
@@ -91,22 +91,19 @@ function newNote(loanId, note, cb) {
 };
 
 function getLoanById(id, cb) {
-    cb(null, store.get(id));
+    store.get(id, cb);
 }
 
 function getLoansByUser(userId, cb) {
-    var loans = store.find({ user: userId });
-
-    cb(null, loans);
+    store.find({ user: userId }, cb);
 }
 
 function getLoans(cb) {
-    cb(null, store.find());
+    store.find(cb);
 }
 
 function updateLoan(id, data, cb) {
-    store.update(id, data);
-    cb(null, id);
+    store.update(id, data, cb);
 }
 
 function rejectLoan(id, cb) {
