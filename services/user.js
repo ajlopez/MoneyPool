@@ -1,37 +1,39 @@
 
-var ostore = require('ostore');
+var db = require('../utils/db');
 
-var store = ostore.createStore('users');
+var store = db.createStore('users');
 
 function clearUsers(cb) {
-    store = ostore.createStore('users');
+    store = db.createStore('users');
     cb(null, null);
 };
 
 function newUser(user, cb) {
-    cb(null, store.add(user));
+    store.add(user, cb);
 };
 
 function getUserById(id, cb) {
-    cb(null, store.get(id));
+    store.get(id, cb);
 }
 
 function getUserByUsername(username, cb) {
-    var users = store.find({ username: username });
-
-    if (!users || !users.length)
-        cb(null, null);
-    else
-        cb(null, users[0]);
+    store.find({ username: username }, function (err, users) {
+        if (err)
+            return cb(err, null);
+            
+        if (!users || !users.length)
+            cb(null, null);
+        else
+            cb(null, users[0]);
+    });
 }
 
 function getUsers(cb) {
-    cb(null, store.find());
+    store.find(cb);
 }
 
 function updateUser(id, data, cb) {
-    store.update(id, data);
-    cb(null, id);
+    store.update(id, data, cb);
 }
 
 module.exports = {

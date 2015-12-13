@@ -100,10 +100,8 @@ exports['get users'] = function (test) {
 exports['update user name'] = function (test) {
     test.async();
     
-    userService.updateUser(adamId, { name: 'Adam Smith' }, function (err, id) {
+    userService.updateUser(adamId, { name: 'Adam Smith' }, function (err, data) {
         test.ok(!err);
-        test.ok(id);
-        test.equal(id, adamId);
         
         userService.getUserById(adamId, function (err, user) {
             test.ok(!err);

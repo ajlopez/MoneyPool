@@ -4,6 +4,8 @@
 var loanService = require('../../services/loan');
 var userService = require('../../services/user');
 var noteService = require('../../services/note');
+var movementService = require('../../services/movement');
+
 var dates = require('../../utils/dates');
 var async = require('simpleasync');
 var scoring = require('../../scoring.json');
@@ -29,6 +31,24 @@ exports['clear users'] = function (test) {
     test.async();
     
     userService.clearUsers(function (err, data) {
+        test.ok(!err);
+        test.done();
+    });
+};
+
+exports['clear notes'] = function (test) {
+    test.async();
+    
+    noteService.clearNotes(function (err, data) {
+        test.ok(!err);
+        test.done();
+    });
+};
+
+exports['clear movements'] = function (test) {
+    test.async();
+    
+    movementService.clearMovements(function (err, data) {
         test.ok(!err);
         test.done();
     });
