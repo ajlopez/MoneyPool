@@ -1,6 +1,7 @@
 
 "use strict"
 
+var db = require('../../utils/db');
 var loanService = require('../../services/loan');
 var userService = require('../../services/user');
 var noteService = require('../../services/note');
@@ -18,37 +19,10 @@ var abelId;
 var eveNoteId;
 var abelNoteId;
 
-exports['clear loans'] = function (test) {
+exports['clear data'] = function (test) {
     test.async();
     
-    loanService.clearLoans(function (err, data) {
-        test.ok(!err);
-        test.done();
-    });
-};
-
-exports['clear users'] = function (test) {
-    test.async();
-    
-    userService.clearUsers(function (err, data) {
-        test.ok(!err);
-        test.done();
-    });
-};
-
-exports['clear notes'] = function (test) {
-    test.async();
-    
-    noteService.clearNotes(function (err, data) {
-        test.ok(!err);
-        test.done();
-    });
-};
-
-exports['clear movements'] = function (test) {
-    test.async();
-    
-    movementService.clearMovements(function (err, data) {
+    db.clear(function (err, data) {
         test.ok(!err);
         test.done();
     });
