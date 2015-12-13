@@ -132,10 +132,8 @@ exports['get notes'] = function (test) {
 exports['update note data'] = function (test) {
     test.async();
     
-    noteService.updateNote(noteId, { description: 'A note' }, function (err, id) {
+    noteService.updateNote(noteId, { description: 'A note' }, function (err, data) {
         test.ok(!err);
-        test.ok(id);
-        test.equal(id, noteId);
         
         noteService.getNoteById(noteId, function (err, note) {
             test.ok(!err);

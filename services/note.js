@@ -1,11 +1,11 @@
 
-var ostore = require('ostore');
+var db = require('../utils/db');
 var dates = require('../utils/dates');
 
-var store = ostore.createStore('notes');
+var store = db.createStore('notes');
 
 function clearNotes(cb) {
-    store = ostore.createStore('notes');
+    store = db.createStore('notes');
     cb(null, null);
 };
 
@@ -15,34 +15,28 @@ function newNote(note, cb) {
     if (!note.currency)
         note.currency = 'ARS';
     note.datetime = dates.nowString();
-    cb(null, store.add(note));
+    store.add(note, cb);
 };
 
 function getNoteById(id, cb) {
-    cb(null, store.get(id));
+    store.get(id, cb);
 }
 
 function getNotesByUser(userId, cb) {
-    var notes = store.find({ user: userId });
-
-    cb(null, notes);
+    store.find({ user: userId }, cb);
 }
 
 function getNotesByLoan(loanId, cb) {
-    var notes = store.find({ loan: loanId });
-
-    cb(null, notes);
+    store.find({ loan: loanId }, cb);
 }
 
 function getNotes(cb) {
-    cb(null, store.find());
+    store.find(cb);
 }
 
 function updateNote(id, data, cb) {
-    store.update(id, data);
-    cb(null, id);
+    store.update(id, data, cb);
 }
-
 
 module.exports = {
     newNote: newNote,
