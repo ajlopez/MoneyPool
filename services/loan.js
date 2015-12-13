@@ -68,6 +68,28 @@ function newLoan(loan, cb) {
     
 };
 
+function newNote(loanId, note, cb) {
+    var loan;
+    
+    note.loan = loanId;
+    
+    async()
+    .then(function (data, next) {
+        getLoanById(loanId, next);
+    })
+    .then(function (data, next) {
+        loan = data;
+        
+        note.currency = loan.currency;
+        
+        noteService.newNote(note, next);
+    })
+    .then(function (data, next) {
+        cb(null, data);
+    })
+    .run();
+};
+
 function getLoanById(id, cb) {
     cb(null, store.get(id));
 }
@@ -102,6 +124,8 @@ module.exports = {
     updateLoan: updateLoan,
     rejectLoan: rejectLoan,
     
-    clearLoans: clearLoans
+    clearLoans: clearLoans,
+    
+    newNote: newNote
 };
 

@@ -37,7 +37,7 @@ exports['get note by id'] = function (test) {
         test.equal(note.id, noteId);
         test.equal(note.status, 'open');
         test.equal(note.currency, 'ARS');
-        test.ok(dates.isDateTimeString(note.created));
+        test.ok(dates.isDateTimeString(note.datetime));
         
         test.done();
     });

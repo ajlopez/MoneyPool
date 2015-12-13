@@ -14,7 +14,7 @@ function newNote(note, cb) {
         note.status = 'open';
     if (!note.currency)
         note.currency = 'ARS';
-    note.created = dates.nowString();
+    note.datetime = dates.nowString();
     cb(null, store.add(note));
 };
 
