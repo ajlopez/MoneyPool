@@ -35,7 +35,7 @@ exports['list no users'] = function (test) {
     userController.listUsers(req, res);
 };
 
-exports['add user'] = function (test) {
+exports['new user'] = function (test) {
     test.async();
     
     var res = {
@@ -70,7 +70,7 @@ exports['add user'] = function (test) {
         }
     };
     
-    userController.addUser(req, res);
+    userController.newUser(req, res);
 };
 
 exports['list users'] = function (test) {

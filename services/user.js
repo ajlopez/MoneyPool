@@ -8,7 +8,7 @@ function clearUsers(cb) {
     cb(null, null);
 };
 
-function addUser(user, cb) {
+function newUser(user, cb) {
     cb(null, store.add(user));
 };
 
@@ -35,7 +35,7 @@ function updateUser(id, data, cb) {
 }
 
 module.exports = {
-    addUser: addUser,
+    newUser: newUser,
     
     getUserById: getUserById,
     getUserByUsername: getUserByUsername,

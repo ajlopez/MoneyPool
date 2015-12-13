@@ -10,8 +10,8 @@ function listUsers(req, res) {
     });
 }
 
-function addUser(req, res) {
-    userService.addUser(req.body, function (err, id) {
+function newUser(req, res) {
+    userService.newUser(req.body, function (err, id) {
         if (err)
             return res.render('admin/error', { error: err });
             
@@ -26,6 +26,6 @@ function addUser(req, res) {
 
 module.exports = {
     listUsers: listUsers,
-    addUser: addUser
+    newUser: newUser
 };
 

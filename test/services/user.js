@@ -12,10 +12,10 @@ exports['clear users'] = function (test) {
     });
 };
 
-exports['add user'] = function (test) {
+exports['new user'] = function (test) {
     test.async();
     
-    userService.addUser({ username: 'adam', name: 'Adam' }, function (err, id) {
+    userService.newUser({ username: 'adam', name: 'Adam' }, function (err, id) {
         test.ok(!err);
         test.ok(id);
         adamId = id;
