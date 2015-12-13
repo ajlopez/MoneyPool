@@ -1,4 +1,6 @@
 
+"use strict"
+
 var loanService = require('../../services/loan');
 var userService = require('../../services/user');
 var dates = require('../../utils/dates');
