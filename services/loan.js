@@ -4,6 +4,9 @@ var async = require('simpleasync');
 var dates = require('../utils/dates');
 var strings = require('../utils/strings');
 
+var noteService = require('./note');
+var scoring = require('../scoring.json');
+
 var store = ostore.createStore('loans');
 
 function getMaxOrder(loans) {
@@ -27,6 +30,10 @@ function newLoan(loan, cb) {
         loan.status = 'open';
     if (!loan.currency)
         loan.currency = 'ARS';
+    if (!loan.periods)
+        loan.periods = 12;
+    if (!loan.days)
+        loan.days = 30;
     loan.created = dates.nowString();
         
     var uservice = require('./user');
@@ -39,6 +46,12 @@ function newLoan(loan, cb) {
     })
     .then(function (data, next) {
         user = data;
+        
+        if (user.scoring) {
+            loan.scoring = user.scoring;
+            loan.monthlyRate = scoring[user.scoring].monthlyRate;
+        }
+        
         getLoansByUser(loan.user, next);
     })
     .then(function (data, next) {

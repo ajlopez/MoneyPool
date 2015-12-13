@@ -5,6 +5,7 @@ var loanService = require('../../services/loan');
 var userService = require('../../services/user');
 var dates = require('../../utils/dates');
 var async = require('simpleasync');
+var scoring = require('../../scoring.json');
 
 var loanId;
 var adamId;
@@ -31,7 +32,7 @@ exports['clear users'] = function (test) {
 exports['create loan user'] = function (test) {
     test.async();
     
-    userService.newUser({ username: 'adam', firstName: 'Adam', lastName: 'Paradise' }, function (err, data) {
+    userService.newUser({ username: 'adam', firstName: 'Adam', lastName: 'Paradise', scoring: 'A' }, function (err, data) {
         test.ok(!err);
         test.ok(data);
         adamId = data;
@@ -53,7 +54,7 @@ exports['create investor user'] = function (test) {
 exports['new loan'] = function (test) {
     test.async();
     
-    loanService.newLoan({ user: adamId, amount: 1000 }, function (err, id) {
+    loanService.newLoan({ user: adamId, amount: 1000, periods: 12 }, function (err, id) {
         test.ok(!err);
         test.ok(id);
         loanId = id;
@@ -75,6 +76,10 @@ exports['get loan by id'] = function (test) {
         test.equal(loan.currency, 'ARS');
         test.equal(loan.order, 1);
         test.equal(loan.code, 'adam-0001');
+        test.equal(loan.scoring, 'A');
+        test.equal(loan.monthlyRate, scoring.A.monthlyRate);
+        test.equal(loan.periods, 12);
+        test.equal(loan.days, 30);
         test.ok(dates.isDateTimeString(loan.created));
         
         test.done();
