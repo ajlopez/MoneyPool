@@ -14,10 +14,10 @@ exports['clear loans'] = function (test) {
     });
 };
 
-exports['add loan'] = function (test) {
+exports['new loan'] = function (test) {
     test.async();
     
-    loanService.addLoan({ user: 1, amount: 1000 }, function (err, id) {
+    loanService.newLoan({ user: 1, amount: 1000 }, function (err, id) {
         test.ok(!err);
         test.ok(id);
         loanId = id;
@@ -119,14 +119,14 @@ exports['update loan data'] = function (test) {
     });
 };
 
-exports['add and reject loan'] = function (test) {
+exports['new and reject loan'] = function (test) {
     test.async();
     
     var loanId;
     
     async()
     .then(function (data, next) {
-        loanService.addLoan({ user: 1, amount: 1000 }, next);
+        loanService.newLoan({ user: 1, amount: 1000 }, next);
     })
     .then(function (id, next) {
         loanId = id;

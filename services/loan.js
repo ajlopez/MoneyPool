@@ -9,7 +9,7 @@ function clearLoans(cb) {
     cb(null, null);
 };
 
-function addLoan(loan, cb) {
+function newLoan(loan, cb) {
     if (!loan.status)
         loan.status = 'open';
     if (!loan.currency)
@@ -42,7 +42,7 @@ function rejectLoan(id, cb) {
 }
 
 module.exports = {
-    addLoan: addLoan,
+    newLoan: newLoan,
     
     getLoanById: getLoanById,
     
