@@ -9,6 +9,7 @@ var movementService = require('../../services/movement');
 
 var dates = require('../../utils/dates');
 var async = require('simpleasync');
+var sl = require('simplelists');
 var scoring = require('../../scoring.json');
 
 var loanId;
@@ -121,5 +122,47 @@ exports['new note from second investor'] = function (test) {
             test.done();
         });
     });
+};
+
+
+exports['accept loan'] = function (test) {
+    test.async();
+
+    async()
+    .then(function (data, next) {
+        loanService.acceptLoan(loanId, next);
+    })
+    .then(function (data, next) {
+        loanService.getLoanById(loanId, next);
+    })
+    .then(function (data, next) {
+        test.ok(data);
+        test.equal(data.status, 'accepted');
+        test.ok(dates.isDateTimeString(data.accepted));
+
+        movementService.getMovementsByUser(adamId, next);
+    })
+    .then(function (data, next) {
+        test.ok(data);
+        test.ok(data.length);
+        test.ok(sl.exist(data, { user: adamId, credit: 1000, debit: 0, loan: loanId, type: 'loan' }));
+        
+        movementService.getMovementsByUser(eveId, next);
+    })
+    .then(function (data, next) {
+        test.ok(data);
+        test.ok(data.length);
+        test.ok(sl.exist(data, { user: eveId, credit: 600, debit: 0, loan: loanId, type: 'note' }));
+        
+        movementService.getMovementsByUser(abelId, next);
+    })
+    .then(function (data, next) {
+        test.ok(data);
+        test.ok(data.length);
+        test.ok(sl.exist(data, { user: abelId, credit: 400, loan: loanId, type: 'note' }));
+        
+        test.done();
+    })
+    .run();
 };
 

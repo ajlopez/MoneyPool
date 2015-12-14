@@ -5,6 +5,7 @@ var dates = require('../utils/dates');
 var strings = require('../utils/strings');
 
 var noteService = require('./note');
+var movementService = require('./movement');
 var scoring = require('../scoring.json');
 
 var store = db.createStore('loans');
@@ -110,6 +111,29 @@ function rejectLoan(id, cb) {
     updateLoan(id, { status: 'rejected', rejected: dates.nowString() }, cb);
 }
 
+function acceptLoan(id, cb) {
+    var loan;
+    
+    async()
+    .then(function (data, next) {
+        getLoanById(id, next);
+    })
+    .then(function (data, next) {
+        loan = data;
+        updateLoan(id, { status: 'accepted', accepted: dates.nowString() }, next);
+    })
+    .then(function (data, next) {
+        movementService.newMovement({
+            user: loan.user,
+            credit: loan.amount,
+            debit: 0,
+            type: 'loan',
+            currency: loan.currency
+        }, cb);
+    })
+    .run();
+}
+
 module.exports = {
     newLoan: newLoan,
     
@@ -120,6 +144,7 @@ module.exports = {
     
     updateLoan: updateLoan,
     rejectLoan: rejectLoan,
+    acceptLoan: acceptLoan,
     
     clearLoans: clearLoans,
     
