@@ -41,6 +41,16 @@ function isDateTimeString(text) {
     return text.match(/\d\d\d\d-\d\d-\d\d\s\d\d:\d\d:\d\d/) != null;
 }
 
+function isDateString(text) {
+    if (!text)
+        return false;
+        
+    if (text.length != 10)
+        return false;
+        
+    return text.match(/\d\d\d\d-\d\d-\d\d/) != null;
+}
+
 function toDate(text) {
     var parts = text.split('-');
     
@@ -63,6 +73,7 @@ module.exports = {
     toNormalDateString: toNormalDateString,
     toNormalDateTimeString: toNormalDateTimeString,
     isDateTimeString: isDateTimeString,
+    isDateString: isDateString,
     nowString: function () { return toNormalDateTimeString(new Date()); },
     calculateDates: calculateDates
 }

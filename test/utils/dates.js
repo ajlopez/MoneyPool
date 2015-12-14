@@ -29,6 +29,18 @@ exports['is date time string'] = function (test) {
     test.strictEqual(dates.isDateTimeString('2015-12-10 00-00:00 Z'), false);
 };
 
+exports['is date string'] = function (test) {
+    test.strictEqual(dates.isDateString(null), false);
+    test.strictEqual(dates.isDateString('2015'), false);
+    test.strictEqual(dates.isDateString('2015-12-10'), true);
+    test.strictEqual(dates.isDateString('2015-12-10 00:00'), false);
+    test.strictEqual(dates.isDateString('2015-12-10 00:00:00'), false);
+    test.strictEqual(dates.isDateString('2015-12-10 01:02:03'), false);
+    test.strictEqual(dates.isDateString('2015:12-10 00-00:00'), false);
+    test.strictEqual(dates.isDateString('2015-12-10 00-00:00'), false);
+    test.strictEqual(dates.isDateString('2015-12-10 00-00:00 Z'), false);
+};
+
 exports['calculate dates'] = function (test) {
     var days = dates.calculateDates('2015-01-05', 30, 3);
     
