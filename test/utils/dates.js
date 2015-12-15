@@ -53,3 +53,6 @@ exports['calculate dates'] = function (test) {
     test.equal(days[2], '2015-04-05');
 };
 
+exports['from date time to date'] = function (test) {
+    test.equal(dates.removeTime('2015-12-10 00:00:00'), '2015-12-10');
+}

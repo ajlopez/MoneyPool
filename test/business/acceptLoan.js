@@ -5,6 +5,7 @@ var db = require('../../utils/db');
 var loanService = require('../../services/loan');
 var userService = require('../../services/user');
 var noteService = require('../../services/note');
+var paymentService = require('../../services/payment');
 var movementService = require('../../services/movement');
 
 var dates = require('../../utils/dates');
@@ -127,6 +128,8 @@ exports['new note from second investor'] = function (test) {
 
 exports['accept loan'] = function (test) {
     test.async();
+    
+    var loan;
 
     async()
     .then(function (data, next) {
@@ -139,6 +142,8 @@ exports['accept loan'] = function (test) {
         test.ok(data);
         test.equal(data.status, 'accepted');
         test.ok(dates.isDateTimeString(data.accepted));
+        
+        loan = data;
 
         noteService.getNotesByLoan(loanId, next);
     })
@@ -167,6 +172,20 @@ exports['accept loan'] = function (test) {
         test.ok(data);
         test.ok(data.length);
         test.ok(sl.exist(data, { user: abelId, debit: 400, credit: 0, loan: loanId, type: 'note' }));
+        
+        paymentService.getPaymentsByLoan(loanId, next);
+    })
+    .then(function (data, next) {
+        test.ok(data);
+        test.equal(data.length, 12);
+        
+        var date = dates.toDate(loan.accepted);
+        
+        for (var k = 1; k <= 12; k++) {
+            date = dates.addDaysToDate(date, 30);
+            
+            sl.exist(data, { loan: loanId, date: date, order: k });
+        }
         
         test.done();
     })

@@ -1,6 +1,10 @@
 
 "use strict"
 
+function removeTime(datetime) {
+    return datetime.substring(0, 10);
+}
+
 function toNormalDateString(date) {
     var year = date.getFullYear();
     var month = date.getMonth() + 1;
@@ -75,6 +79,7 @@ module.exports = {
     isDateTimeString: isDateTimeString,
     isDateString: isDateString,
     nowString: function () { return toNormalDateTimeString(new Date()); },
-    calculateDates: calculateDates
+    calculateDates: calculateDates,
+    removeTime: removeTime
 }
 
