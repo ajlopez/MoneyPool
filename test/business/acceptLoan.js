@@ -140,6 +140,13 @@ exports['accept loan'] = function (test) {
         test.equal(data.status, 'accepted');
         test.ok(dates.isDateTimeString(data.accepted));
 
+        noteService.getNotesByLoan(loanId, next);
+    })
+    .then(function (data, next) {
+        test.ok(data);
+        test.ok(data.length);
+        test.ok(sl.all(data, { status: 'accepted' }));
+
         movementService.getMovementsByUser(adamId, next);
     })
     .then(function (data, next) {
@@ -152,14 +159,14 @@ exports['accept loan'] = function (test) {
     .then(function (data, next) {
         test.ok(data);
         test.ok(data.length);
-        test.ok(sl.exist(data, { user: eveId, credit: 600, debit: 0, loan: loanId, type: 'note' }));
+        test.ok(sl.exist(data, { user: eveId, debit: 600, credit: 0, loan: loanId, type: 'note' }));
         
         movementService.getMovementsByUser(abelId, next);
     })
     .then(function (data, next) {
         test.ok(data);
         test.ok(data.length);
-        test.ok(sl.exist(data, { user: abelId, credit: 400, loan: loanId, type: 'note' }));
+        test.ok(sl.exist(data, { user: abelId, debit: 400, credit: 0, loan: loanId, type: 'note' }));
         
         test.done();
     })

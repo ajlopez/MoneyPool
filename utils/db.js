@@ -151,7 +151,7 @@ function MemoryStore(impl) {
     
     this.update = function (id, data, cb) {
         setImmediate(function () { 
-            cb(null, impl.update(id, data)); 
+            cb(null, impl.update(id, data, { multi: true })); 
         });
     };
     

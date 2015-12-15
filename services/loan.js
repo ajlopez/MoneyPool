@@ -3,6 +3,7 @@ var db = require('../utils/db');
 var async = require('simpleasync');
 var dates = require('../utils/dates');
 var strings = require('../utils/strings');
+var each = require('../utils/each');
 
 var noteService = require('./note');
 var movementService = require('./movement');
@@ -123,12 +124,31 @@ function acceptLoan(id, cb) {
         updateLoan(id, { status: 'accepted', accepted: dates.nowString() }, next);
     })
     .then(function (data, next) {
+        noteService.updateNote({ loan: id, status: 'open' }, { status: 'accepted' }, next);
+    })
+    .then(function (data, next) {
         movementService.newMovement({
             user: loan.user,
             credit: loan.amount,
             debit: 0,
             type: 'loan',
-            currency: loan.currency
+            currency: loan.currency,
+            loan: id
+        }, next);
+    })
+    .then(function (data, next) {
+        noteService.getNotesByLoan(id, next);
+    })
+    .then(function (data, next) {
+        each(data, function (note, next) {
+            movementService.newMovement({
+                user: note.user,
+                debit: note.amount,
+                credit: 0,
+                type: 'note',
+                currency: note.currency,
+                loan: note.loan
+            }, next);
         }, cb);
     })
     .run();
