@@ -66,7 +66,7 @@ exports['create second investor user'] = function (test) {
 exports['new loan'] = function (test) {
     test.async();
     
-    loanService.newLoan({ user: adamId, amount: 1000 }, function (err, id) {
+    loanService.newLoan({ user: adamId, amount: 1000, periods: 12, days: 30 }, function (err, id) {
         test.ok(!err);
         test.ok(id);
         loanId = id;
@@ -179,13 +179,10 @@ exports['accept loan'] = function (test) {
         test.ok(data);
         test.equal(data.length, 12);
         
-        var date = dates.toDate(loan.accepted);
+        var paymentDates = dates.calculateDates(dates.removeTime(loan.accepted), loan.days, loan.periods);
         
-        for (var k = 1; k <= 12; k++) {
-            date = dates.addDaysToDate(date, 30);
-            
-            sl.exist(data, { loan: loanId, date: date, order: k });
-        }
+        for (var k = 1; k <= 12; k++)
+            sl.exist(data, { loan: loanId, date: paymentDates[k - 1], order: k });
         
         test.done();
     })

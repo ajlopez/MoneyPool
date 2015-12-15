@@ -2,6 +2,7 @@
 var db = require('../utils/db');
 var async = require('simpleasync');
 var dates = require('../utils/dates');
+var finances = require('../utils/finances');
 var strings = require('../utils/strings');
 var each = require('../utils/each');
 
@@ -114,6 +115,8 @@ function rejectLoan(id, cb) {
 
 function acceptLoan(id, cb) {
     var loan;
+    var pays;
+    var pdates;
     
     async()
     .then(function (data, next) {
@@ -149,6 +152,17 @@ function acceptLoan(id, cb) {
                 currency: note.currency,
                 loan: note.loan
             }, next);
+        }, next);
+    })
+    .then(function (data, next) {
+        var k = 0;
+        var pays = finances.calculatePayments(loan.amount, loan.monthlyRate, loan.days, loan.periods);
+        var pdates = dates.calculatePayments(dates.toDate(loan.accepted), loan.days, loan.periods);
+        
+        each(pays, function (pay, next) {
+            var pdate = pdates[k++];
+            
+            paymentService.newPayment({ loan: loan.id, date: pdate, capital: pay.capital, interest: pay.interest, order: k }, next)
         }, cb);
     })
     .run();
