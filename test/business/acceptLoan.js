@@ -14,6 +14,8 @@ var sl = require('simplelists');
 var scoring = require('../../scoring.json');
 
 var loan;
+var payments;
+
 var loanId;
 var adamId;
 var eveId;
@@ -141,6 +143,7 @@ exports['accept loan'] = function (test) {
         test.ok(data);
         test.equal(data.status, 'accepted');
         test.ok(dates.isDateTimeString(data.accepted));
+        test.equal(data.date, dates.removeTime(data.accepted));
         
         loan = data;
 
@@ -178,7 +181,9 @@ exports['accept loan'] = function (test) {
         test.ok(data);
         test.equal(data.length, 12);
         
-        var paymentDates = dates.calculateDates(dates.removeTime(loan.accepted), loan.days, loan.periods);
+        payments = data;
+        
+        var paymentDates = dates.calculateDates(loan.date, loan.days, loan.periods);
         
         for (var k = 1; k <= 12; k++)
             sl.exist(data, { loan: loanId, date: paymentDates[k - 1], order: k });
@@ -188,7 +193,7 @@ exports['accept loan'] = function (test) {
     .run();
 };
 
-exports['get initial status'] = function (test) {
+exports['get status without movements'] = function (test) {
     test.async();
     
     async()
@@ -210,6 +215,38 @@ exports['get initial status'] = function (test) {
         test.ok(data.movements);
         test.ok(Array.isArray(data.movements));
         test.equal(data.movements.length, 0);
+        
+        test.done();
+    })
+    .run();
+}
+
+exports['get status to date'] = function (test) {
+    test.async();
+    
+    async()
+    .then(function (data, next) {
+        loanService.getLoanStatusToDate(loan.id, payments[0].date, next);
+    })
+    .then(function (data, next) {
+        test.ok(data);
+        
+        test.ok(data.loan);
+        test.equal(data.loan.id, loan.id);
+        
+        test.ok(data.payments);
+        test.ok(Array.isArray(data.payments));
+        test.equal(data.payments.length, 12);
+        
+        sl.all(data.payments, { canceled: 0 });
+        
+        test.ok(data.movements);
+        test.ok(Array.isArray(data.movements));
+        test.equal(data.movements.length, 0);
+        
+        test.equal(data.lastPayment, loan.date);
+        test.equal(data.dueCapital, payments[0].capital);
+        test.equal(data.dueInterest, payments[0].interest);
         
         test.done();
     })

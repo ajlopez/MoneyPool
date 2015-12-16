@@ -129,7 +129,7 @@ function acceptLoan(id, cb) {
     })
     .then(function (data, next) {
         loan = data;
-        updateLoan(id, { status: 'accepted', accepted: accepted }, next);
+        updateLoan(id, { status: 'accepted', accepted: accepted, date: dates.removeTime(accepted) }, next);
     })
     .then(function (data, next) {
         noteService.updateNote({ loan: id, status: 'open' }, { status: 'accepted' }, next);
@@ -199,6 +199,33 @@ function getLoanStatus(id, cb) {
     .run();
 }
 
+function getLoanStatusToDate(id, date, cb) {
+    var status;
+    
+    async()
+    .then(function (data, next) {
+        getLoanStatus(id, next);
+    })
+    .then(function (data, next) {
+        var paidCapital = 0;
+        var lastDate = loan.date;
+        
+        for (var k = 0; k < status.payments.length; k++) {
+            var mdate = dates.removeTime(status.movements[k].datetime);
+            
+            if (mdate > date)
+                continue;
+            
+            paidCapital += status.movements[k].capital;
+            lastDate = mdate;
+        }
+            
+        status.dueCapital = loan.amount - paidCapital;
+        status.lastPayment = lastDate;
+    })
+    .run();
+}
+
 module.exports = {
     newLoan: newLoan,
     
@@ -215,6 +242,7 @@ module.exports = {
     
     newNote: newNote,
     
-    getLoanStatus: getLoanStatus
+    getLoanStatus: getLoanStatus,
+    getLoanStatusToDate: getLoanStatusToDate
 };
 
