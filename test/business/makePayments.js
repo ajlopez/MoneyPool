@@ -128,13 +128,7 @@ exports['make first payment'] = function (test) {
     test.async();
 
     var payment = payments[0];
-    console.log('payment');
-    console.dir(payment);
-    console.log('interest', payment.interest);
-    console.log('capital', payment.capital);
-    console.log('amount 1', payment.capital + payment.interest);
     var amount = payment.capital + payment.interest;
-    console.log('amount', amount);
     var date = payment.date;
     var status;
     
@@ -166,6 +160,30 @@ exports['make first payment'] = function (test) {
         test.ok(dates.isDateTimeString(movement.datetime));
         test.equal(movement.capital, payments[0].capital);
         test.equal(movement.interest, payments[0].interest);
+        
+        movementService.getMovementsByUser(eveId, next);
+    })
+    .then(function (data, next) {
+        test.ok(data);
+        test.ok(sl.exist(data, {
+            loan: loanId,
+            user: eveId,
+            type: 'return',
+            currency: status.loan.currency,
+            debit: 0,
+            credit: amount * 600 / status.loan.amount
+        }));
+        
+        movementService.getMovementsByUser(abelId, next);
+    })
+    .then(function (data, next) {
+        test.ok(data);
+        sl.exist(data, {
+            loan: loanId,
+            user: abelId,
+            type: 'return',
+            amount: amount * 400 / status.loan.amount
+        })
         
         test.done();
     })

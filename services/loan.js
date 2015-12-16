@@ -261,6 +261,7 @@ function doPayment(loanId, movdata, cb) {
     
     var date = dates.removeTime(movdata.datetime);
     var status;
+    var amount;
     
     async()
     .then(function (data, next) {
@@ -268,8 +269,7 @@ function doPayment(loanId, movdata, cb) {
     })
     .then(function (data, next) {
         status = data;
-        console.dir(status);
-        var amount = movdata.amount;
+        amount = movdata.amount;
         var interest = status.dueInterest;
         var capital = amount - interest;
         
@@ -284,7 +284,27 @@ function doPayment(loanId, movdata, cb) {
             datetime: movdata.datetime
         };
         
-        movementService.newMovement(movement, cb);
+        movementService.newMovement(movement, next);
+    })
+    .then(function (data, next) {
+        movementService.getMovementsByLoan(loanId, next);
+    })
+    .then(function (data, next) {
+        each(data, function (mov, next) {
+            if (mov.type != 'note')
+                return next();
+            
+            var movement = {
+                debit: 0,
+                credit: amount * mov.debit / status.loan.amount,
+                user: mov.user,
+                loan: loanId,
+                currency: status.loan.currency,
+                type: 'return'
+            };
+            
+            movementService.newMovement(movement, next);
+        }, cb);
     })
     .run();
 }
