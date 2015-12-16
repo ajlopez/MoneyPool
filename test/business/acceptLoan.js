@@ -246,7 +246,7 @@ exports['get status to date'] = function (test) {
         test.equal(data.movements.length, 0);
         
         test.equal(data.lastPayment, loan.date);
-        test.equal(data.dueCapital, payments[0].capital);
+        test.equal(data.dueCapital, loan.amount);
         test.equal(data.dueInterest, payments[0].interest);
         
         test.done();

@@ -225,6 +225,8 @@ function getLoanStatusToDate(id, date, cb) {
         status.dueCapital = status.loan.amount - paidCapital;
         status.lastPayment = lastDate;
         
+        status.dueInterest = finances.calculateInterest(status.dueCapital, status.loan.monthlyRate, dates.getDateDiffDays(lastDate, date));
+        
         cb(null, status);
     })
     .run();
