@@ -234,6 +234,7 @@ exports['get status to date'] = function (test) {
         test.ok(data.loan);
         test.equal(data.loan.id, loan.id);
         
+        console.dir(data);
         test.ok(data.payments);
         test.ok(Array.isArray(data.payments));
         test.equal(data.payments.length, 12);

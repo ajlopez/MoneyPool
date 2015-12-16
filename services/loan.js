@@ -207,10 +207,12 @@ function getLoanStatusToDate(id, date, cb) {
         getLoanStatus(id, next);
     })
     .then(function (data, next) {
+        status = data;
         var paidCapital = 0;
-        var lastDate = loan.date;
         
-        for (var k = 0; k < status.payments.length; k++) {
+        var lastDate = status.loan.date;
+        
+        for (var k = 0; k < status.movements.length; k++) {
             var mdate = dates.removeTime(status.movements[k].datetime);
             
             if (mdate > date)
@@ -220,8 +222,10 @@ function getLoanStatusToDate(id, date, cb) {
             lastDate = mdate;
         }
             
-        status.dueCapital = loan.amount - paidCapital;
+        status.dueCapital = status.loan.amount - paidCapital;
         status.lastPayment = lastDate;
+        
+        cb(null, status);
     })
     .run();
 }
