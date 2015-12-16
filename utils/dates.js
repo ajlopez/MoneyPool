@@ -73,6 +73,12 @@ function calculateDates(fromDate, days, nperiods) {
     return result;
 }
 
+function getDateDiffDays(initialDate, finalDate) {
+    var from = toDate(initialDate);
+    var to = toDate(finalDate);
+    return Math.ceil((to.getTime() - from.getTime()) / (1000 * 3600 * 24));
+}
+
 module.exports = {
     toNormalDateString: toNormalDateString,
     toNormalDateTimeString: toNormalDateTimeString,
@@ -80,6 +86,7 @@ module.exports = {
     isDateString: isDateString,
     nowString: function () { return toNormalDateTimeString(new Date()); },
     calculateDates: calculateDates,
-    removeTime: removeTime
+    removeTime: removeTime,
+    getDateDiffDays: getDateDiffDays
 }
 

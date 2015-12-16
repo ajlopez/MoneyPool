@@ -56,3 +56,10 @@ exports['calculate dates'] = function (test) {
 exports['from date time to date'] = function (test) {
     test.equal(dates.removeTime('2015-12-10 00:00:00'), '2015-12-10');
 }
+
+exports['dates difference in days'] = function (test) {
+    test.equal(dates.getDateDiffDays('2015-12-10', '2015-12-10'), 0);
+    test.equal(dates.getDateDiffDays('2015-12-10', '2015-12-20'), 10);
+    test.equal(dates.getDateDiffDays('2015-12-10', '2016-01-10'), 31);
+}
+
