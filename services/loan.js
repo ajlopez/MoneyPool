@@ -208,15 +208,40 @@ function getLoanStatusToDate(id, date, cb) {
     })
     .then(function (data, next) {
         status = data;
+        
+        status.payments.forEach(function (payment) {
+            payment.canceled = 0;
+        });
+        
         var paidCapital = 0;
         
         var lastDate = status.loan.date;
         
         for (var k = 0; k < status.movements.length; k++) {
+            console.dir(status.movements);
+            
             var mdate = dates.removeTime(status.movements[k].datetime);
             
             if (mdate > date)
                 continue;
+            
+            var capital = status.movements[k].capital;
+            
+            status.payments.forEach(function (payment) {
+                if (capital <= 0)
+                    return;
+                
+                var due = payment.capital - payment.canceled;
+                var amount;
+                
+                if (due < capital)
+                    amount = due;
+                else
+                    amount = capital;
+                
+                payment.canceled += amount;
+                capital -= amount;
+            })
             
             paidCapital += status.movements[k].capital;
             lastDate = mdate;
@@ -228,6 +253,39 @@ function getLoanStatusToDate(id, date, cb) {
         status.dueInterest = finances.calculateInterest(status.dueCapital, status.loan.monthlyRate, dates.getDateDiffDays(lastDate, date));
         
         cb(null, status);
+    })
+    .run();
+}
+
+function doPayment(loanId, movdata, cb) {
+    if (!movdata.datetime)
+        movdata.datetime = dates.nowString();
+    
+    var date = dates.removeTime(movdata.datetime);
+    var status;
+    
+    async()
+    .then(function (data, next) {
+        getLoanStatusToDate(loanId, date, next);
+    })
+    .then(function (data, next) {
+        status = data;
+        var amount = movdata.amount;
+        var interest = status.dueInterest;
+        var capital = amount - capital;
+        
+        var movement = {
+            user: status.loan.user,
+            loan: loanId,
+            currency: status.loan.currency,
+            amount: amount,
+            capital: capital,
+            interest: interest,
+            type: 'payment',
+            datetime: movdata.datetime
+        };
+        
+        movementService.newMovement(movement, cb);
     })
     .run();
 }
@@ -249,6 +307,8 @@ module.exports = {
     newNote: newNote,
     
     getLoanStatus: getLoanStatus,
-    getLoanStatusToDate: getLoanStatusToDate
+    getLoanStatusToDate: getLoanStatusToDate,
+    
+    doPayment: doPayment
 };
 

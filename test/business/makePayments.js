@@ -124,3 +124,45 @@ exports['accept loan'] = function (test) {
     .run();
 };
 
+exports['make first payment'] = function (test) {
+    test.async();
+
+    var payment = payments[0];
+    var amount = payment.capital + payment.interest;
+    var date = payment.date;
+    var status;
+    
+    async()
+    .then(function (data, next) {
+        loanService.doPayment(loanId, { amount: amount, datetime: date + " 00:00:00" }, next);
+    })
+    .then(function (data, next) {
+        loanService.getLoanStatusToDate(loanId, date, next);
+    })
+    .then(function (data, next) {
+        test.ok(data);
+        
+        status = data;
+        
+        test.ok(data.payments);
+        test.equal(data.payments[0].capital, data.payments[0].canceled);
+        test.ok(data.movements);
+        test.equal(data.movements.lenght, 1);
+        
+        var movement = data.movements[0];
+        
+        test.ok(movement.id);
+        test.equal(movement.loan, loanId);
+        test.equal(movement.currency, status.loan.currency);
+        test.equal(movement.user, status.loan.user);
+        test.equal(movement.amount, amount);
+        test.equal(movement.type, 'payment');
+        test.ok(dates.isDateTimeString(movement.datetime));
+        test.equal(movement.capital, payments[0].capital);
+        test.equal(movement.interest, payments[0].interest);
+        
+        test.done();
+    })
+    .run();
+}
+
