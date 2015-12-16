@@ -8,6 +8,7 @@ var each = require('../utils/each');
 
 var noteService = require('./note');
 var movementService = require('./movement');
+var paymentService = require('./payment');
 var scoring = require('../scoring.json');
 
 var store = db.createStore('loans');
@@ -117,6 +118,7 @@ function acceptLoan(id, cb) {
     var loan;
     var pays;
     var pdates;
+    var accepted = dates.nowString();
     
     async()
     .then(function (data, next) {
@@ -124,7 +126,7 @@ function acceptLoan(id, cb) {
     })
     .then(function (data, next) {
         loan = data;
-        updateLoan(id, { status: 'accepted', accepted: dates.nowString() }, next);
+        updateLoan(id, { status: 'accepted', accepted: accepted }, next);
     })
     .then(function (data, next) {
         noteService.updateNote({ loan: id, status: 'open' }, { status: 'accepted' }, next);
@@ -157,7 +159,7 @@ function acceptLoan(id, cb) {
     .then(function (data, next) {
         var k = 0;
         var pays = finances.calculatePayments(loan.amount, loan.monthlyRate, loan.days, loan.periods);
-        var pdates = dates.calculatePayments(dates.toDate(loan.accepted), loan.days, loan.periods);
+        var pdates = dates.calculateDates(dates.removeTime(accepted), loan.days, loan.periods);
         
         each(pays, function (pay, next) {
             var pdate = pdates[k++];
