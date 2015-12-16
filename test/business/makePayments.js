@@ -128,7 +128,13 @@ exports['make first payment'] = function (test) {
     test.async();
 
     var payment = payments[0];
+    console.log('payment');
+    console.dir(payment);
+    console.log('interest', payment.interest);
+    console.log('capital', payment.capital);
+    console.log('amount 1', payment.capital + payment.interest);
     var amount = payment.capital + payment.interest;
+    console.log('amount', amount);
     var date = payment.date;
     var status;
     
@@ -147,7 +153,7 @@ exports['make first payment'] = function (test) {
         test.ok(data.payments);
         test.equal(data.payments[0].capital, data.payments[0].canceled);
         test.ok(data.movements);
-        test.equal(data.movements.lenght, 1);
+        test.equal(data.movements.length, 1);
         
         var movement = data.movements[0];
         

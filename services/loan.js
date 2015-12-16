@@ -217,9 +217,7 @@ function getLoanStatusToDate(id, date, cb) {
         
         var lastDate = status.loan.date;
         
-        for (var k = 0; k < status.movements.length; k++) {
-            console.dir(status.movements);
-            
+        for (var k = 0; k < status.movements.length; k++) {            
             var mdate = dates.removeTime(status.movements[k].datetime);
             
             if (mdate > date)
@@ -270,9 +268,10 @@ function doPayment(loanId, movdata, cb) {
     })
     .then(function (data, next) {
         status = data;
+        console.dir(status);
         var amount = movdata.amount;
         var interest = status.dueInterest;
-        var capital = amount - capital;
+        var capital = amount - interest;
         
         var movement = {
             user: status.loan.user,

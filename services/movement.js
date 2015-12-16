@@ -14,7 +14,8 @@ function clearMovements(cb) {
 function newMovement(movement, cb) {
     if (!movement.currency)
         movement.currency = 'ARS';
-    movement.datetime = dates.nowString();
+    if (!movement.datetime)
+        movement.datetime = dates.nowString();
     store.add(movement, cb);
 };
 
