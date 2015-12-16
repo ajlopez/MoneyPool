@@ -13,6 +13,7 @@ var async = require('simpleasync');
 var sl = require('simplelists');
 var scoring = require('../../scoring.json');
 
+var loan;
 var loanId;
 var adamId;
 var eveId;
@@ -129,8 +130,6 @@ exports['new note from second investor'] = function (test) {
 exports['accept loan'] = function (test) {
     test.async();
     
-    var loan;
-
     async()
     .then(function (data, next) {
         loanService.acceptLoan(loanId, next);
@@ -188,4 +187,32 @@ exports['accept loan'] = function (test) {
     })
     .run();
 };
+
+exports['get initial status'] = function (test) {
+    test.async();
+    
+    async()
+    .then(function (data, next) {
+        loanService.getLoanStatus(loan.id, next);
+    })
+    .then(function (data, next) {
+        test.ok(data);
+        
+        test.ok(data.loan);
+        test.equal(data.loan.id, loan.id);
+        
+        test.ok(data.payments);
+        test.ok(Array.isArray(data.payments));
+        test.equal(data.payments.length, 12);
+        
+        sl.all(data.payments, { canceled: 0 });
+        
+        test.ok(data.movements);
+        test.ok(Array.isArray(data.movements));
+        test.equal(data.movements.length, 0);
+        
+        test.done();
+    })
+    .run();
+}
 

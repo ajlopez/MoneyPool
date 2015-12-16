@@ -1,6 +1,8 @@
+"use strict"
 
 var db = require('../utils/db');
 var async = require('simpleasync');
+var sl = require('simplelists');
 var dates = require('../utils/dates');
 var finances = require('../utils/finances');
 var strings = require('../utils/strings');
@@ -171,6 +173,32 @@ function acceptLoan(id, cb) {
     .run();
 }
 
+function getLoanStatus(id, cb) {
+    var status = { };
+    
+    async()
+    .then(function (data, next) {
+        getLoanById(id, next);
+    })
+    .then(function (data, next) {
+        status.loan = data;
+        
+        paymentService.getPaymentsByLoan(id, next);
+    })
+    .then(function (data, next) {
+        status.payments = sl.sort(data, 'order');
+        
+        movementService.getMovementsByLoan(id, next);
+    })
+    .then(function (data, next) {
+        data = sl.where(data, { type: 'payment' });
+        status.movements = sl.sort(data, 'datetime');
+        
+        cb(null, status);
+    })
+    .run();
+}
+
 module.exports = {
     newLoan: newLoan,
     
@@ -185,6 +213,8 @@ module.exports = {
     
     clearLoans: clearLoans,
     
-    newNote: newNote
+    newNote: newNote,
+    
+    getLoanStatus: getLoanStatus
 };
 
