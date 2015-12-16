@@ -16,7 +16,14 @@ function calculatePayments(amount, monthlyRate, days, nperiods) {
     return periods;
 }
 
+function calculateInterest(amount, monthlyRate, days) {
+    var periodRate = Math.exp(Math.log(monthlyRate) / 30 * days);
+    var rate = periodRate / 100;
+    return parseFloat((amount * rate).toFixed(2));
+}
+
 module.exports = {
-    calculatePayments: calculatePayments
+    calculatePayments: calculatePayments,
+    calculateInterest: calculateInterest
 };
 

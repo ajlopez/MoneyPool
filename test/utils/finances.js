@@ -28,4 +28,6 @@ exports['calculate payments with rate'] = function (test) {
         if (k)
             test.ok(payments[k].interest < payments[k - 1].interest);
     }
+    
+    test.equal(finances.calculateInterest(1000, 1, 30), payments[0].interest);
 };
