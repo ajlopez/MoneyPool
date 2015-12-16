@@ -38,7 +38,8 @@ function newLoan(loan, cb) {
         loan.periods = 12;
     if (!loan.days)
         loan.days = 30;
-    loan.created = dates.nowString();
+    if (!loan.created)
+        loan.created = dates.nowString();
         
     var uservice = require('./user');
     var user;
