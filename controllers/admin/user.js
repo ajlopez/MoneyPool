@@ -1,11 +1,14 @@
 
 var userService = require('../../services/user');
+var translate = require('../../utils/translate');
 
 function listUsers(req, res) {
     userService.getUsers(function (err, users) {
         if (err)
             return res.render('admin/error', { error: err });
-            
+
+        translate.scorings(users);
+        
         res.render('admin/userList', { users: users });
     });
 }
@@ -14,7 +17,9 @@ function viewUser(req, res) {
     userService.getUserById(req.params.id, function (err, user) {
         if (err)
             return res.render('admin/error', { error: err });
-            
+        
+        user.scoringDescription = translate.scoring(user.scoring);
+        
         res.render('admin/userView', { user: user });
     });
 }
