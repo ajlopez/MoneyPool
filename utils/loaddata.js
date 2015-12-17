@@ -18,8 +18,6 @@ function loaddata(filename, cb) {
         each(data.users, processUser, cb);
     })
     .run();
-    
-    cb(null, null);
 }
 
 function processUser(user, next) {

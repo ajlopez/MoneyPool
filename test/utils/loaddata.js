@@ -31,5 +31,7 @@ exports['users loaded'] = function (test) {
         test.ok(!err);
         test.ok(data);
         test.equal(data.length, datatest.users.length);
+        test.done();
     });
 };
+
