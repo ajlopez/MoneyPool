@@ -1,11 +1,14 @@
 
 var loanService = require('../../services/loan');
+var translate = require('../../utils/translate');
 
 function listLoans(req, res) {
     loanService.getLoans(function (err, loans) {
         if (err)
             return res.render('admin/error', { error: err });
             
+        translate.statuses(loans);
+        
         res.render('admin/loanList', { loans: loans });
     });
 }
