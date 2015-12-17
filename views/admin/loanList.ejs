@@ -8,7 +8,7 @@
                     <th></th>
                     <th>Código</th>
                     <th>Usuario</th>
-                    <th>Monto</th>
+                    <th style='text-align: right'>Monto</th>
                     <th>Fecha/Hora Creación</th>
                     <th>Estado</th>
                     <th>Fecha/Hora Estado</th>
@@ -20,7 +20,7 @@
                     <td><a href="/admin/loan/<%= loan.id %>">Ver</a></td>
                     <td><%= loan.code %></td>
                     <td><a href="/admin/user/<%= loan.user %>"><%= loan.userDescription %></a></td>
-                    <td class='number'><%= loan.amount.toFixed(2) %></td>
+                    <td style='text-align: right'><%= loan.amount.toFixed(2) %></td>
                     <td><%= loan.created %></td>
                     <td><%= loan.statusDescription %></td>
                 </tr>
