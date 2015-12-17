@@ -9,6 +9,11 @@ function loginUser(req, res) {
     res.render('user/login', { message: null });
 }
 
+function logoutUser(req, res) {
+    req.session.user = null;
+    res.redirect('/');
+}
+
 function authenticateUser(req, res) {
     console.dir(req.body);
     
@@ -24,6 +29,8 @@ function authenticateUser(req, res) {
             return res.render('user/login', req.body);
         }
         
+        req.session.user = user;
+        
         return res.redirect('/');
     });
 }
@@ -31,6 +38,7 @@ function authenticateUser(req, res) {
 module.exports = {
     registerUser: registerUser,
     loginUser: loginUser,
+    logoutUser: logoutUser,
     authenticateUser: authenticateUser
 };
 
