@@ -258,7 +258,9 @@ function closeDb(cb) {
 
 function useMemory() {
     usedb = false;
-	db.close();
+    
+    if (db)
+        db.close();
 }
 
 module.exports = {
@@ -268,6 +270,8 @@ module.exports = {
     clear: clear,
     
     useDb: useDb,
-    closeDb: closeDb
+    closeDb: closeDb,
+    
+    useMemory: useMemory
 };
 

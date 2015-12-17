@@ -2,6 +2,8 @@
 var loaddata = require('../../utils/loaddata');
 var db = require('../../utils/db');
 
+db.useMemory();
+
 var userService = require('../../services/user');
 
 var datatest = require('../../data/datatest.json');
