@@ -13,9 +13,11 @@ function listUsers(req, res) {
     })
     .then(function (data, next) {
         model.users = data;
+        translate.scorings(model.users);
         res.render('admin/userList', model);
     })
     .fail(function (err) {
+        console.log(err);
         res.render('admin/error', { error: err });
     })
     .run();

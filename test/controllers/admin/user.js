@@ -1,6 +1,7 @@
 
 var userController = require('../../../controllers/admin/user');
 var userService = require('../../../services/user');
+var translate = require('../../../utils/translate');
 
 var adamId;
 var adam;
@@ -85,6 +86,7 @@ exports['list users'] = function (test) {
             test.ok(Array.isArray(model.users));
             test.equal(model.users.length, 1);
             
+            adam.scoringDescription = translate.scoring(adam.scoring);
             test.deepEqual(model.users[0], adam);
             
             test.done();

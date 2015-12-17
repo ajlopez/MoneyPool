@@ -1,0 +1,32 @@
+<% var title = 'Préstamo' %>
+<% include header %>
+    <h1>Préstamo</h1>
+    <div class='row actions'>
+        <a href="/admin/loan" class="btn btn-info">Préstamos</a>
+    </div>
+    <div class='row'>
+        <table class='table view-data'>
+            <tr>
+                <td>Código</td>
+                <td><%= loan.code %></td>
+            </tr>
+            <tr>
+                <td>Usuario</td>
+                <td><a href="/admin/user/<%= loan.user %>"><%= loan.userDescription %></a></td>
+            </tr>
+            <tr>
+                <td>Monto</td>
+                <td><%= loan.amount.toFixed(2) %></td>
+            </tr>
+            <tr>
+                <td>Fecha/Hora Creación</td>
+                <td><%= loan.created %></td>
+            </tr>
+            <tr>
+                <td>Estado</td>
+                <td><%= loan.statusDescription %></td>
+            </tr>
+        </table>
+    </div>
+
+<% include footer %>
