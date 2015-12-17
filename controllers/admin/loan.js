@@ -9,7 +9,11 @@ function listLoans(req, res) {
             
         translate.statuses(loans);
         
-        res.render('admin/loanList', { loans: loans });
+        translate.users(loans, function (err, data) {
+            if (err)
+                return res.render('admin/error', { error: err });
+            res.render('admin/loanList', { loans: loans });
+        })
     });
 }
 
@@ -21,7 +25,7 @@ function newLoan(req, res) {
         loanService.getLoanById(id, function (err, loan) {
             if (err)
                 return res.render('admin/error', { error: err });
-                
+                       
             res.render('admin/loanView', { loan: loan });
         });
     });
