@@ -14,7 +14,19 @@ function translateStatuses(items) {
     });
 }
 
+function translateUser(code, cb) {
+    var userService = require('../services/user');
+    
+    userService.getUserById(code, function (err, data) {
+        if (err)
+            return cb(err, null);
+            
+        cb(null, data.username);
+    });
+}
+
 module.exports = {
     status: translateStatus,
-    statuses: translateStatuses
+    statuses: translateStatuses,
+    user: translateUser
 };
