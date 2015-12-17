@@ -1,6 +1,8 @@
 
 var loaddata = require('../../utils/loaddata');
 var db = require('../../utils/db');
+var sl = require('simplelists');
+var async = require('simpleasync');
 
 db.useMemory();
 
@@ -33,6 +35,18 @@ exports['users loaded'] = function (test) {
         test.ok(!err);
         test.ok(data);
         test.equal(data.length, datatest.users.length);
+        test.done();
+    });
+};
+
+exports['get users with scoring C'] = function (test) {
+    test.async();
+    
+    userService.getUsersWithScoring('C', function (err, data) {
+        test.ok(!err);
+        test.ok(data);
+        test.ok(data.length);
+        test.ok(sl.all(data, { scoring: 'C' }));
         test.done();
     });
 };

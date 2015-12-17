@@ -32,6 +32,14 @@ function getUsers(cb) {
     store.find(cb);
 }
 
+function getUsersWithoutScoring(cb) {
+    store.find({ scoring: null }, cb);
+}
+
+function getUsersWithScoring(scoring, cb) {
+    store.find({ scoring: scoring }, cb);
+}
+
 function updateUser(id, data, cb) {
     store.update(id, data, cb);
 }
@@ -43,6 +51,8 @@ module.exports = {
     getUserByUsername: getUserByUsername,
     
     getUsers: getUsers,
+    getUsersWithoutScoring: getUsersWithoutScoring,
+    getUsersWithScoring: getUsersWithScoring,
     
     updateUser: updateUser,
     
