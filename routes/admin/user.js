@@ -5,6 +5,6 @@ var router = express.Router();
 var controller = require('../../controllers/admin/user');
 
 router.get('/', controller.listUsers);
-router.post('/:id', controller.addUser);
+router.post('/:id', controller.newUser);
 
 module.exports = router;

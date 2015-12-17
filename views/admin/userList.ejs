@@ -1,4 +1,28 @@
 <% var title = 'Usuarios' %>
 <% include header %>
     <h1>Usuarios</h1>
+    <div class='row'>
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Scoring</th>
+                </tr>
+            </thead>
+            <tbody>
+<% users.forEach(function (user) { %>
+                <tr>
+                    <td><a href="/admin/user/<%= user.id %>">Ver</a></td>
+                    <td><%= user.username %></td>
+                    <td><%= user.firstName %></td>
+                    <td><%= user.lastName %></td>
+                    <td><%= user.scoring %></td>
+                </tr>
+<% }); %>
+            </tbody>
+        </table>
+    </div>
 <% include footer %>

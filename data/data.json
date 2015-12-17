@@ -1,0 +1,8 @@
+{
+    "users": [
+        { "username": "adam", "firstName": "Adam", "lastName": "Paradise", "scoring": "C" },
+        { "username": "eve", "firstName": "Eve", "lastName": "Paradise" },
+        { "username": "abel", "firstName": "Abel", "lastName": "Paradise" }
+    ]
+}
+

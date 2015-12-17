@@ -1,0 +1,31 @@
+<% var title = 'Préstamos' %>
+<% include header %>
+    <h1>Préstamos</h1>
+    <div class='row'>
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Código</th>
+                    <th>Usuario</th>
+                    <th>Monto</th>
+                    <th>Fecha/Hora Creación</th>
+                    <th>Estado</th>
+                    <th>Fecha/Hora Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+<% loans.forEach(function (loan) { %>
+                <tr>
+                    <td><a href="/admin/loan/<%= loan.id %>">Ver</a></td>
+                    <td><%= loan.code %></td>
+                    <td><%= loan.user %></td>
+                    <td><%= loan.amount %></td>
+                    <td><%= loan.created %></td>
+                    <td><%= loan.status %></td>
+                </tr>
+<% }); %>
+            </tbody>
+        </table>
+    </div>
+<% include footer %>

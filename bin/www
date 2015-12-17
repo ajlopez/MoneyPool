@@ -7,6 +7,15 @@
 var app = require('../app');
 var debug = require('debug')('MoneyPool:server');
 var http = require('http');
+var loaddata = require('../utils/loaddata');
+var db = require('../utils/db');
+
+db.useMemory();
+
+loaddata(null, function (err, data) {
+    if (err)
+        console.log(err);
+});
 
 /**
  * Get port from environment and store in Express.
