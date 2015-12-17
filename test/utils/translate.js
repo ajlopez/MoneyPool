@@ -38,6 +38,20 @@ exports['translate scoring'] = function (test) {
     }
 };
 
+exports['translate scorings'] = function (test) {
+    var data = [
+        { scoring: 'A' },
+        { scoring: 'B' },
+        { }
+    ];
+    
+    translate.scorings(data);
+    
+    test.equal(data[0].scoringDescription, translate.scoring(data[0].scoring));
+    test.equal(data[1].scoringDescription, translate.scoring(data[1].scoring));
+    test.equal(data[2].scoringDescription, translate.scoring(data[2].scoring));
+};
+
 exports['translate status'] = function (test) {
     for (var key in statuses) {
         test.equal(translate.status(key), statuses[key].description);

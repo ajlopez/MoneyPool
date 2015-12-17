@@ -1,5 +1,6 @@
 
 var statuses = require('../data/statuses.json');
+var scorings = require('../data/scorings.json');
 var each = require('./each');
 
 function translateStatus(code) {
@@ -12,6 +13,22 @@ function translateStatus(code) {
 function translateStatuses(items) {
     items.forEach(function (item) {
         item.statusDescription = translateStatus(item.status);
+    });
+}
+
+function translateScoring(code) {
+    if (scorings[code] && scorings[code].description)
+        return scorings[code].description;
+    
+    if (!code)
+        return 'Sin calificación';
+        
+    return code;
+}
+
+function translateScorings(items) {
+    items.forEach(function (item) {
+        item.scoringDescription = translateScoring(item.scoring);
     });
 }
 
@@ -48,6 +65,8 @@ function translateUsers(items, cb) {
 module.exports = {
     status: translateStatus,
     statuses: translateStatuses,
+    scoring: translateScoring,
+    scorings: translateScorings,
     user: translateUser,
     users: translateUsers
 };
