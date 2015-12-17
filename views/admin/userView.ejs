@@ -24,4 +24,33 @@
             </tr>
         </table>
     </div>
+
+<% if (loans && loans.length) { %>    
+    <h2>Préstamos</h2>
+    <div class='row'>
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Código</th>
+                    <th style='text-align: right'>Monto</th>
+                    <th>Fecha/Hora Creación</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+<% loans.forEach(function (loan) { %>
+                <tr>
+                    <td><a href="/admin/loan/<%= loan.id %>">Ver</a></td>
+                    <td><%= loan.code %></td>
+                    <td style='text-align: right'><%= loan.amount.toFixed(2) %></td>
+                    <td><%= loan.created %></td>
+                    <td><%= loan.statusDescription %></td>
+                </tr>
+<% }); %>
+           </tbody>
+        </table>
+    </div>
+<% } %>
+
 <% include footer %>
