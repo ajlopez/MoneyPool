@@ -1,0 +1,27 @@
+<% var title = 'Usuarios' %>
+<% include header %>
+    <h1>Usuario</h1>
+    <div class='row actions'>
+        <a href="/admin/user" class="btn btn-info">Usuarios</a>
+    </div>
+    <div class='row'>
+        <table class='table view-data'>
+            <tr>
+                <td>Código</td>
+                <td><%= user.username %></td>
+            </tr>
+            <tr>
+                <td>Nombre</td>
+                <td><%= user.firstName %></td>
+            </tr>
+            <tr>
+                <td>Apellido</td>
+                <td><%= user.lastName %></td>
+            </tr>
+            <tr>
+                <td>Calificación</td>
+                <td><%= user.scoring %> <%= user.scoringDescription %></td>
+            </tr>
+        </table>
+    </div>
+<% include footer %>

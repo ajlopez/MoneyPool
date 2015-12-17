@@ -10,6 +10,7 @@ var userService = require('../../services/user');
 db.useMemory();
 
 var statuses = require('../../data/statuses');
+var scorings = require('../../data/scorings');
 
 var users;
 
@@ -29,6 +30,12 @@ exports['load data'] = function (test) {
         test.ok(!err);
         test.done();
     });
+};
+
+exports['translate scoring'] = function (test) {
+    for (var key in statuses) {
+        test.equal(translate.status(key), statuses[key].description);
+    }
 };
 
 exports['translate status'] = function (test) {

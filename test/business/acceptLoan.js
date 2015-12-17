@@ -11,7 +11,6 @@ var movementService = require('../../services/movement');
 var dates = require('../../utils/dates');
 var async = require('simpleasync');
 var sl = require('simplelists');
-var scoring = require('../../scoring.json');
 
 var loan;
 var payments;

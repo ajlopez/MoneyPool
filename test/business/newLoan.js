@@ -6,7 +6,7 @@ var loanService = require('../../services/loan');
 var userService = require('../../services/user');
 var dates = require('../../utils/dates');
 var async = require('simpleasync');
-var scoring = require('../../scoring.json');
+var scorings = require('../../data/scorings.json');
 
 var loanId;
 var adamId;
@@ -69,7 +69,7 @@ exports['get loan by id'] = function (test) {
         test.equal(loan.order, 1);
         test.equal(loan.code, 'adam-0001');
         test.equal(loan.scoring, 'A');
-        test.equal(loan.monthlyRate, scoring.A.monthlyRate);
+        test.equal(loan.monthlyRate, scorings.A.monthlyRate);
         test.equal(loan.periods, 12);
         test.equal(loan.days, 30);
         test.ok(dates.isDateTimeString(loan.created));

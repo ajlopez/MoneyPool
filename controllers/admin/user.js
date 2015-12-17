@@ -10,6 +10,15 @@ function listUsers(req, res) {
     });
 }
 
+function viewUser(req, res) {
+    userService.getUserById(req.params.id, function (err, user) {
+        if (err)
+            return res.render('admin/error', { error: err });
+            
+        res.render('admin/userView', { user: user });
+    });
+}
+
 function newUser(req, res) {
     userService.newUser(req.body, function (err, id) {
         if (err)
@@ -26,6 +35,7 @@ function newUser(req, res) {
 
 module.exports = {
     listUsers: listUsers,
+    viewUser: viewUser,
     newUser: newUser
 };
 

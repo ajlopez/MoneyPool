@@ -11,7 +11,7 @@ var each = require('../utils/each');
 var noteService = require('./note');
 var movementService = require('./movement');
 var paymentService = require('./payment');
-var scoring = require('../scoring.json');
+var scorings = require('../data/scorings.json');
 
 var store = db.createStore('loans');
 
@@ -56,7 +56,7 @@ function newLoan(loan, cb) {
         
         if (user.scoring) {
             loan.scoring = user.scoring;
-            loan.monthlyRate = scoring[user.scoring].monthlyRate;
+            loan.monthlyRate = scorings[user.scoring].monthlyRate;
         }
         
         getLoansByUser(loan.user, next);
