@@ -51,3 +51,16 @@ exports['get users with scoring C'] = function (test) {
     });
 };
 
+exports['get users without scoring'] = function (test) {
+    test.async();
+    
+    userService.getUsersWithoutScoring(function (err, data) {
+        test.ok(!err);
+        test.ok(data);
+        test.ok(data.length);
+        test.ok(sl.all(data, { scoring: null }));
+        test.done();
+    });
+};
+
+

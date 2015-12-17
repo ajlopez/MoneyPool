@@ -2,6 +2,7 @@
 var db = require('../utils/db');
 
 var store = db.createStore('users');
+var sl = require('simplelists');
 
 function clearUsers(cb) {
     store = db.createStore('users');
@@ -33,7 +34,12 @@ function getUsers(cb) {
 }
 
 function getUsersWithoutScoring(cb) {
-    store.find({ scoring: null }, cb);
+    store.find(cb, function (err, data) {
+        if (err)
+            return cb(err, null);
+        
+        cb(null, sl.where(data, function (user) { return !user.scoring }));
+    });
 }
 
 function getUsersWithScoring(scoring, cb) {
