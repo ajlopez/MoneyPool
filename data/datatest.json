@@ -2,7 +2,13 @@
     "users": [
         { "username": "adam", "firstName": "Adam", "lastName": "Paradise", "scoring": "C" },
         { "username": "eve", "firstName": "Eve", "lastName": "Paradise" },
-        { "username": "abel", "firstName": "Abel", "lastName": "Paradise" }
+        { "username": "abel", "firstName": "Abel", "lastName": "Paradise" },
+        { "username": "caine", "firstName": "Caine", "lastName": "Paradise", "scoring": "D" }
+    ],
+    
+    "loans": [
+        { "user": { "username": "adam"}, "amount": 1000, "periods": 6 },
+        { "user": { "username": "caine"}, "amount": 10000, "periods": 48, "status": "rejected" }
     ]
 }
 

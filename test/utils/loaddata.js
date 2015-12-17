@@ -7,6 +7,7 @@ var async = require('simpleasync');
 db.useMemory();
 
 var userService = require('../../services/user');
+var loanService = require('../../services/loan');
 
 var datatest = require('../../data/datatest.json');
 
@@ -63,4 +64,19 @@ exports['get users without scoring'] = function (test) {
     });
 };
 
+exports['loans loaded'] = function (test) {
+    test.async();
+    
+    loanService.getLoans(function (err, data) {
+        test.ok(!err);
+        test.ok(data);
+        test.equal(data.length, datatest.loans.length);
+        
+        sl.all(data, function (loan) { return loan.user });
+        sl.all(data, function (loan) { return loan.amount });
+        sl.all(data, function (loan) { return loan.created });
+        
+        test.done();
+    });
+};
 
