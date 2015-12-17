@@ -5,24 +5,16 @@ var loanService = require('../../services/loan');
 var userService = require('../../services/user');
 var dates = require('../../utils/dates');
 var async = require('simpleasync');
+var db = require('../../utils/db');
 
 var loanId;
 var adamId;
 var eveId;
 
-exports['clear loans'] = function (test) {
+exports['clear data'] = function (test) {
     test.async();
     
-    loanService.clearLoans(function (err, data) {
-        test.ok(!err);
-        test.done();
-    });
-};
-
-exports['clear users'] = function (test) {
-    test.async();
-    
-    userService.clearUsers(function (err, data) {
+    db.clear(function (err, data) {
         test.ok(!err);
         test.done();
     });
@@ -95,13 +87,13 @@ exports['get unknown loan by id'] = function (test) {
 exports['get loans by user'] = function (test) {
     test.async();
     
-    loanService.getLoansByUser(1, function (err, loans) {
+    loanService.getLoansByUser(adamId, function (err, loans) {
         test.ok(!err);
         test.ok(loans);
         test.ok(Array.isArray(loans));
         test.equal(loans.length, 1);
         
-        test.equal(loans[0].user, 1);
+        test.equal(loans[0].user, adamId);
         test.equal(loans[0].id, loanId);
         
         test.done();
@@ -162,7 +154,7 @@ exports['new and reject loan'] = function (test) {
     
     async()
     .then(function (data, next) {
-        loanService.newLoan({ user: 1, amount: 1000 }, next);
+        loanService.newLoan({ user: adamId, amount: 1000 }, next);
     })
     .then(function (id, next) {
         loanId = id;

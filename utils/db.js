@@ -1,7 +1,8 @@
 'use strict';
 
 var ostore = require('ostore');
-var mongodb = require('./mongodb');
+var mongodb = require('./mongorepo');
+var each = require('./each');
 
 var mstores = { };
 var dbstores = { };
@@ -11,7 +12,10 @@ var db;
 var usedb = false;
 
 function DbStore(impl) {
-    this.get = function (id, cb) { 
+    this.get = function (id, cb) {
+        if (typeof id !== 'string')
+            return cb(null, null);
+        
         try {
             impl.findById(id, function (err, item) {
                 if (item && item._id) {
@@ -40,13 +44,15 @@ function DbStore(impl) {
         }
     };
 
-    this.add = function (data, cb) { 
+    this.add = function (data, cb) {
         try {
             impl.insert(data, function (err, item) {
                 if (item && item[0] && item[0]._id)
-                    cb(err, item[0]._id.toString());
+                    return cb(err, item[0]._id.toString());
+                else if (item && item.ops && item.ops.length && item.ops[0]._id)
+                    return cb(err, item.ops[0]._id.toString());
                 else
-                    cb(err, null);
+                    return cb(err, null);
             });
         }
         catch (err) {
@@ -196,7 +202,7 @@ function createMemoryStore(name) {
 }
 
 function createDbStore(name) {
-    var store = new DbStore(ostore.createStore());
+    var store = new DbStore(mongodb.createRepository(db, name));
     dbstores[name] = store;
     return store;
 }
@@ -210,27 +216,11 @@ function createStore(name) {
 
 function clearStores(stores, cb) {
     var names = Object.keys(stores);
-    
-    var l = names.length;    
-    var k = 0;
-    
-    doStep();
-    
-    function doStep() {
-        if (k >= l) {
-            cb(null, null);
-            return;
-        }
-        
-        var store = stores[names[k++]];
-        
-        store.clear(function (err, data) {
-            if (err)
-                cb(err, null);
-            else
-                setImmediate(doStep);
-        });
-    }
+
+    each(names, function (name, next) {
+        var store = stores[name];
+        store.clear(next);
+    }, cb);
 }
 
 function clear(cb) {
@@ -244,12 +234,17 @@ function useDb(name, config, cb) {
     config = config || { };
     usedb = true;
     dbstores = { };
-    db = mongodb.openDatabase(name, config.host || 'localhost', config.port || 27017, config.username, config.password, cb);
-    getCreateStore('users');
-    getCreateStore('loans');
-    getCreateStore('notes');
-    getCreateStore('movements');
-    getCreateStore('payments');
+    db = mongodb.openDatabase(name, config.host || 'localhost', config.port || 27017, function (err, data) {
+        if (err)
+            return cb(err, null);
+        
+        getCreateStore('users');
+        getCreateStore('loans');
+        getCreateStore('notes');
+        getCreateStore('movements');
+        getCreateStore('payments');
+        cb(null, db);
+    });
 }
 
 function closeDb(cb) {

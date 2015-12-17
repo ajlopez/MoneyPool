@@ -13,8 +13,6 @@ var movementService = require('./movement');
 var paymentService = require('./payment');
 var scorings = require('../data/scorings.json');
 
-var store = db.createStore('loans');
-
 function getMaxOrder(loans) {
     var maxorder = 0;
     
@@ -27,11 +25,13 @@ function getMaxOrder(loans) {
 }
 
 function clearLoans(cb) {
-    store = db.createStore('loans');
+    db.createStore('loans');
     cb(null, null);
 };
 
 function newLoan(loan, cb) {
+    var store = db.store('loans');
+    
     if (!loan.status)
         loan.status = 'open';
     if (!loan.currency)
@@ -76,6 +76,8 @@ function newLoan(loan, cb) {
 };
 
 function newNote(loanId, note, cb) {
+    var store = db.store('loans');
+    
     var loan;
     
     note.loan = loanId;
@@ -98,18 +100,26 @@ function newNote(loanId, note, cb) {
 };
 
 function getLoanById(id, cb) {
+    var store = db.store('loans');
+    
     store.get(id, cb);
 }
 
 function getLoansByUser(userId, cb) {
+    var store = db.store('loans');
+    
     store.find({ user: userId }, cb);
 }
 
 function getLoans(cb) {
+    var store = db.store('loans');
+    
     store.find(cb);
 }
 
 function updateLoan(id, data, cb) {
+    var store = db.store('loans');
+    
     store.update(id, data, cb);
 }
 

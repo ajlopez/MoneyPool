@@ -1,23 +1,27 @@
 
+"strict equal"
+
 var db = require('../utils/db');
 
-var store = db.createStore('users');
 var sl = require('simplelists');
 
 function clearUsers(cb) {
-    store = db.createStore('users');
+    db.createStore('users');
     cb(null, null);
 };
 
 function newUser(user, cb) {
+    var store = db.store('users');
     store.add(user, cb);
 };
 
 function getUserById(id, cb) {
+    var store = db.store('users');
     store.get(id, cb);
 }
 
 function getUserByUsername(username, cb) {
+    var store = db.store('users');
     store.find({ username: username }, function (err, users) {
         if (err)
             return cb(err, null);
@@ -30,10 +34,12 @@ function getUserByUsername(username, cb) {
 }
 
 function getUsers(cb) {
+    var store = db.store('users');
     store.find(cb);
 }
 
 function getUsersWithoutScoring(cb) {
+    var store = db.store('users');
     store.find(cb, function (err, data) {
         if (err)
             return cb(err, null);
@@ -43,10 +49,12 @@ function getUsersWithoutScoring(cb) {
 }
 
 function getUsersWithScoring(scoring, cb) {
+    var store = db.store('users');
     store.find({ scoring: scoring }, cb);
 }
 
 function updateUser(id, data, cb) {
+    var store = db.store('users');
     store.update(id, data, cb);
 }
 
