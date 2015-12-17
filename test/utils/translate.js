@@ -33,8 +33,8 @@ exports['load data'] = function (test) {
 };
 
 exports['translate scoring'] = function (test) {
-    for (var key in statuses) {
-        test.equal(translate.status(key), statuses[key].description);
+    for (var key in scorings) {
+        test.equal(translate.scoring(key), scorings[key].description);
     }
 };
 
