@@ -1,16 +1,23 @@
 <% var title = 'Ingreso de Usuario' %>
 <% include ../header %>
     <h1>Ingreso de Usuario</h1>
+<% if (message) { %>
+    <div class='row'>
+        <div class='error col-md-8'>
+            <%= message %>
+        </div>
+    </div>
+<% } %>       
     <div class='row'>
         <div class='col-md-4'>
-            <form>
+            <form method="post">
               <div class="form-group">
                 <label for="username">Código de Usuario</label>
-                <input type="text" class="form-control" id="username" placeholder="Código de Usuario">
+                <input type="text" class="form-control" name="username" id="username" placeholder="Código de Usuario">
               </div>
               <div class="form-group">
                 <label for="password">Contraseña</label>
-                <input type="password" class="form-control" id="password" placeholder="Contraseña">
+                <input type="password" class="form-control" name="password" id="password" placeholder="Contraseña">
               </div>
               <button type="submit" class="btn btn-default">Ingresar</button>
             </form>

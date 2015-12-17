@@ -17,7 +17,6 @@ function listUsers(req, res) {
         res.render('admin/userList', model);
     })
     .fail(function (err) {
-        console.log(err);
         res.render('admin/error', { error: err });
     })
     .run();
