@@ -1,16 +1,23 @@
 
+var async = require('simpleasync');
+
 var userService = require('../../services/user');
 var translate = require('../../utils/translate');
 
 function listUsers(req, res) {
-    userService.getUsers(function (err, users) {
-        if (err)
-            return res.render('admin/error', { error: err });
-
-        translate.scorings(users);
-        
-        res.render('admin/userList', { users: users });
-    });
+    var model = { }
+    async()
+    .then(function (data, next) {
+        userService.getUsers(next);
+    })
+    .then(function (data, next) {
+        model.users = data;
+        res.render('admin/userList', model);
+    })
+    .fail(function (err) {
+        res.render('admin/error', { error: err });
+    })
+    .run();
 }
 
 function viewUser(req, res) {
