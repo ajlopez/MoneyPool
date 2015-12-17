@@ -27,11 +27,18 @@ function translateUser(code, cb) {
 }
 
 function translateUsers(items, cb) {
+    var users = {};
     each(items, function (item, next) {
+        if (users[item.user]) {
+            item.userDescription = users[item.user];
+            return next();
+        }
+        
         translateUser(item.user, function (err, data) {
             if (err)
                 return cb(err, null);
                 
+            users[item.user] = data;
             item.userDescription = data;
             next();
         });
