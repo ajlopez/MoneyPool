@@ -1,5 +1,6 @@
 
 var statuses = require('../data/statuses.json');
+var each = require('./each');
 
 function translateStatus(code) {
     if (statuses[code] && statuses[code].description)
@@ -25,8 +26,21 @@ function translateUser(code, cb) {
     });
 }
 
+function translateUsers(items, cb) {
+    each(items, function (item, next) {
+        translateUser(item.user, function (err, data) {
+            if (err)
+                return cb(err, null);
+                
+            item.userDescription = data;
+            next();
+        });
+    }, cb);
+}
+
 module.exports = {
     status: translateStatus,
     statuses: translateStatuses,
-    user: translateUser
+    user: translateUser,
+    users: translateUsers
 };

@@ -3,12 +3,15 @@ var translate = require('../../utils/translate');
 var loaddata = require('../../utils/loaddata');
 var db = require('../../utils/db');
 var async = require('simpleasync');
+var sl = require('simplelists');
 
 var userService = require('../../services/user');
 
 db.useMemory();
 
 var statuses = require('../../data/statuses');
+
+var users;
 
 exports['clear data'] = function (test) {
     test.async();
@@ -57,6 +60,7 @@ exports['translate user'] = function (test) {
     })
     .then(function (data, next) {
         user = data[0];
+        users = data;
         
         translate.user(user.id, next);
     })
@@ -66,5 +70,20 @@ exports['translate user'] = function (test) {
         test.done();
     })
     .run();
+};
+
+exports['translate users'] = function (test) {
+    test.async();
+    
+    var items = [];
+    
+    users.forEach(function (user) {
+        items.push({ user: user.id });
+    });
+    
+    translate.users(items, function (err, data) {
+        test.ok(sl.all(data, function (item) { return item.userDescription }));
+        test.done();
+    })
 };
 
