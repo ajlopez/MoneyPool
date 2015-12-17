@@ -8,6 +8,13 @@ function translateStatus(code) {
     return code;
 }
 
+function translateStatuses(items) {
+    items.forEach(function (item) {
+        item.statusDescription = translateStatus(item.status);
+    });
+}
+
 module.exports = {
-    status: translateStatus
+    status: translateStatus,
+    statuses: translateStatuses
 };
