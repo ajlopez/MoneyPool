@@ -1,0 +1,6 @@
+{
+    "open": { "description": "Abierto" },
+    "rejected": { "description": "Rechazado" },
+    "accepted": { "description": "Aceptado" },
+    "closed": { "description": "Cerrado" }
+}
