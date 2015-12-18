@@ -4,6 +4,8 @@ var async = require('simpleasync');
 var userService = require('../services/user');
 var loanService = require('../services/loan');
 var translate = require('../utils/translate');
+var dates = require('../utils/dates');
+
 
 function getCurrentUserId(req) {
     var id = req.session.user.id;
@@ -94,6 +96,8 @@ function createMyLoan(req, res) {
 
 function viewMyLoan(req, res) {
     var id = getId(req);
+    
+    var model = { };
 
     async()
     .then(function (data, next) {
@@ -105,11 +109,68 @@ function viewMyLoan(req, res) {
         
         loan.statusDescription = translate.status(loan.status);
         
-        var model = {
-            loan: loan
-        };
+        model.loan = loan;
         
+        if (loan.status != 'accepted')
+            return next(null, null);
+            
+        loanService.getLoanStatusToDate(id, dates.todayString(), next);
+    })
+    .then(function (status, next) {
+        if (status)
+            model.status = status;
+            
         res.render('my/loanView', model);
+    })
+    .fail(function (err) {
+        res.render('error', { error: err });
+    })
+    .run();
+}
+
+function acceptMyLoan(req, res) {
+    var id = getId(req);
+
+    async()
+    .then(function (data, next) {
+        loanService.getLoanById(id, next);
+    })
+    .then(function (loan, next) {
+        if (!loan || loan.user != getCurrentUserId(req))
+            return res.redirect('/my');
+        
+        if (loan.status != 'open')
+            return res.redirect('/my/loan/' + id);
+            
+        loanService.acceptLoan(id, next);
+    })
+    .then(function (loan, next) {
+        res.redirect('/my/loan/' + id);
+    })
+    .fail(function (err) {
+        res.render('error', { error: err });
+    })
+    .run();
+}
+
+function rejectMyLoan(req, res) {
+    var id = getId(req);
+
+    async()
+    .then(function (data, next) {
+        loanService.getLoanById(id, next);
+    })
+    .then(function (loan, next) {
+        if (!loan || loan.user != getCurrentUserId(req))
+            return res.redirect('/my');
+        
+        if (loan.status != 'open')
+            return res.redirect('/my/loan/' + id);
+            
+        loanService.rejectLoan(id, next);
+    })
+    .then(function (loan, next) {
+        res.redirect('/my/loan/' + id);
     })
     .fail(function (err) {
         res.render('error', { error: err });
@@ -122,5 +183,8 @@ module.exports = {
     listMyLoans: listMyLoans,
     viewMyLoan: viewMyLoan,
     newMyLoan: newMyLoan,
-    createMyLoan: createMyLoan
+    createMyLoan: createMyLoan,
+    acceptMyLoan: acceptMyLoan,
+    rejectMyLoan: rejectMyLoan
 };
+

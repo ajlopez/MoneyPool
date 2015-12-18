@@ -85,6 +85,7 @@ module.exports = {
     isDateTimeString: isDateTimeString,
     isDateString: isDateString,
     nowString: function () { return toNormalDateTimeString(new Date()); },
+    todayString: function () { return toNormalDateString(new Date()); },
     calculateDates: calculateDates,
     removeTime: removeTime,
     getDateDiffDays: getDateDiffDays

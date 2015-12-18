@@ -38,4 +38,53 @@
         </table>
     </div>
 
+<% if (loan.status == 'open') { %>
+    <h2>Operar</h2>
+    <div class='row'>
+        <div class='actions col-md-8'>
+        <a href="/my/loan/<%= loan.id %>/accept" class="btn btn-primary">Aceptar Préstamo</a>
+        <a href="/my/loan/<%= loan.id %>/reject" class="btn btn-primary">Rechazar Préstamo</a>
+        </div>
+    </div>
+<% } %>
+
+<% if (loan.status == 'accepted') { %>
+    <h2>Operar</h2>
+    <div class='row'>
+        <div class='actions col-md-8'>
+        <a href="/my/loan/<%= loan.id %>/pay" class="btn btn-primary">Pagar Cuota</a>
+        </div>
+    </div>
+<% } %>
+
+<% if (status && status.payments) { %>
+    <h2>Cuotas</h2>
+    <div class='row'>
+        <table class='table table-striped'>
+            <thead>
+                <tr>
+                    <th>Número</th>
+                    <th>Fecha</th>
+                    <th style='text-align: right'>Capital</th>
+                    <th style='text-align: right'>Interés</th>
+                    <th style='text-align: right'>Total</th>
+                    <th style='text-align: right'>Capital Cancelado</th>
+                </tr>
+            </thead>
+            <tbody>
+<% status.payments.forEach(function (payment) { %>
+                <tr>
+                    <td><%= payment.order %></td>
+                    <td><%= payment.date %></td>
+                    <td style='text-align: right'><%= payment.capital.toFixed(2) %></td>
+                    <td style='text-align: right'><%= payment.interest.toFixed(2) %></td>
+                    <td style='text-align: right'><%= (payment.capital + payment.interest).toFixed(2) %></td>
+                    <td style='text-align: right'><%= payment.canceled.toFixed(2) %></td>
+                </tr>
+<% }); %>
+           </tbody>
+        </table>
+    </div>
+<% } %>
+
 <% include ../footer %>
