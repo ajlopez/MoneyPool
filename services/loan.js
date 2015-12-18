@@ -55,8 +55,10 @@ function newLoan(loan, cb) {
         user = data;
         
         if (user.scoring) {
-            loan.scoring = user.scoring;
-            loan.monthlyRate = scorings[user.scoring].monthlyRate;
+            if (!loan.scoring)
+                loan.scoring = user.scoring;
+            if (!loan.monthlyRate)
+                loan.monthlyRate = scorings[user.scoring].monthlyRate;
         }
         
         getLoansByUser(loan.user, next);
