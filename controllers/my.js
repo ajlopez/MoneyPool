@@ -4,9 +4,10 @@ var sl = require('simplelists');
 
 var userService = require('../services/user');
 var loanService = require('../services/loan');
+var noteService = require('../services/note');
+
 var translate = require('../utils/translate');
 var dates = require('../utils/dates');
-
 
 function getCurrentUserId(req) {
     var id = req.session.user.id;
@@ -200,6 +201,79 @@ function doInvest(req, res) {
     .run();
 }
 
+function viewOpenLoan(req, res) {
+    var id = getId(req);
+    
+    var model = { };
+
+    async()
+    .then(function (data, next) {
+        loanService.getLoanById(id, next);
+    })
+    .then(function (loan, next) {
+        if (!loan || loan.status != 'open' || loan.user == getCurrentUserId(req))
+            return res.redirect('/my');
+        
+        loan.statusDescription = translate.status(loan.status);
+        
+        model.loan = loan;
+        
+        translate.user(loan.user, next);
+    })
+    .then(function (data, next) {
+        model.loan.userDescription = data;
+        
+        noteService.getNotesByLoan(id, next);
+    })
+    .then(function (notes, next) {
+        model.notes = notes;
+        
+        if (notes)
+            model.totalNotes = sl.sum(notes, ['amount']).amount;
+        
+        if (!notes)
+            return next(null, null);
+            
+        translate.users(notes, next);
+    })
+    .then(function (notes, next) {
+        res.render('my/openLoanView', model);
+    })
+    .fail(function (err) {
+        res.render('error', { error: err });
+    })
+    .run();    
+}
+
+function newNote(req, res) {
+    var id = getId(req);
+    res.render('my/noteNew', { loanId: id });
+}
+
+function createNote(req, res) {
+    var loanId = getId(req);
+    
+    var amount = parseFloat(req.body.amount);
+    
+    async()
+    .then(function (data, next) {
+        var note = {
+            loan: loanId,
+            amount: amount,
+            user: getCurrentUserId(req)
+        };
+        
+        noteService.newNote(note, next);
+    })
+    .then(function (data, next) {
+        res.redirect('/my/oloan/' + loanId);
+    })
+    .fail(function (err) {
+        res.render('error', { error: err });
+    })
+    .run();    
+} 
+
 module.exports = {
     viewMyUser: viewMyUser,
     
@@ -210,6 +284,9 @@ module.exports = {
     acceptMyLoan: acceptMyLoan,
     rejectMyLoan: rejectMyLoan,
     
-    doInvest: doInvest
+    doInvest: doInvest,
+    viewOpenLoan: viewOpenLoan,
+    newNote: newNote,
+    createNote: createNote
 };
 

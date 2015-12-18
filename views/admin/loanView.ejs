@@ -19,6 +19,18 @@
                 <td><%= loan.amount.toFixed(2) %></td>
             </tr>
             <tr>
+                <td>Moneda</td>
+                <td><%= loan.currency %></td>
+            </tr>
+            <tr>
+                <td>Cantidad de Cuotas</td>
+                <td><%= loan.periods %></td>
+            </tr>
+            <tr>
+                <td>Tasa Mensual</td>
+                <td><%= loan.monthlyRate.toFixed(2) %></td>
+            </tr>
+            <tr>
                 <td>Fecha/Hora Creación</td>
                 <td><%= loan.created %></td>
             </tr>
