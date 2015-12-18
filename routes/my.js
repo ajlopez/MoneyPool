@@ -19,4 +19,7 @@ router.get('/oloan/:id', controller.viewOpenLoan);
 router.get('/oloan/:id/note/new', controller.newNote);
 router.post('/oloan/:id/note/new', controller.createNote);
 
+router.get('/loan/:id/pay/new', controller.newPayment);
+router.post('/loan/:id/pay/new', controller.createPayment);
+
 module.exports = router;

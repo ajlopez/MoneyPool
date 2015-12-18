@@ -288,6 +288,33 @@ function createNote(req, res) {
         res.render('error', { error: err });
     })
     .run();    
+}
+ 
+function newPayment(req, res) {
+    var id = getId(req);
+    res.render('my/payNew', { loanId: id });
+}
+
+function createPayment(req, res) {
+    var loanId = getId(req);
+    
+    var amount = parseFloat(req.body.amount);
+    
+    async()
+    .then(function (data, next) {
+        var movdata = {
+            amount: amount
+        };
+        
+        loanService.doPayment(loanId, movdata, next);
+    })
+    .then(function (data, next) {
+        res.redirect('/my/loan/' + loanId);
+    })
+    .fail(function (err) {
+        res.render('error', { error: err });
+    })
+    .run();    
 } 
 
 module.exports = {
@@ -302,7 +329,11 @@ module.exports = {
     
     doInvest: doInvest,
     viewOpenLoan: viewOpenLoan,
+    
     newNote: newNote,
-    createNote: createNote
+    createNote: createNote,
+    
+    newPayment: newPayment,
+    createPayment: createPayment
 };
 
