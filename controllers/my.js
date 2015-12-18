@@ -1,5 +1,6 @@
 
 var async = require('simpleasync');
+var sl = require('simplelists');
 
 var userService = require('../services/user');
 var loanService = require('../services/loan');
@@ -177,13 +178,38 @@ function rejectMyLoan(req, res) {
     .run();
 }
 
+function doInvest(req, res) {
+    var model = { };
+    
+    async()
+    .then(function (data, next) {
+        loanService.getOpenLoans(next);
+    })
+    .then(function (loans, next) {
+        var userId = getCurrentUserId(req);
+        
+        loans = sl.where(loans, function (loan) { return loan.user != userId });
+            
+        model.loans = loans;
+        
+        res.render('my/investList', model);
+    })
+    .fail(function (err) {
+        res.render('error', { error: err });
+    })
+    .run();
+}
+
 module.exports = {
     viewMyUser: viewMyUser,
+    
     listMyLoans: listMyLoans,
     viewMyLoan: viewMyLoan,
     newMyLoan: newMyLoan,
     createMyLoan: createMyLoan,
     acceptMyLoan: acceptMyLoan,
-    rejectMyLoan: rejectMyLoan
+    rejectMyLoan: rejectMyLoan,
+    
+    doInvest: doInvest
 };
 

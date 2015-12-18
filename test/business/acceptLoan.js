@@ -127,6 +127,19 @@ exports['new note from second investor'] = function (test) {
     });
 };
 
+exports['get open loans'] = function (test) {
+    test.async();
+    
+    loanService.getOpenLoans(function (err, data) {
+        test.ok(!err);
+        test.ok(data);
+
+        test.ok(data.length);
+        sl.all(data, { status: 'open' });
+            
+        test.done();
+    });
+};
 
 exports['accept loan'] = function (test) {
     test.async();
@@ -190,6 +203,19 @@ exports['accept loan'] = function (test) {
         test.done();
     })
     .run();
+};
+
+exports['get no open loans'] = function (test) {
+    test.async();
+    
+    loanService.getOpenLoans(function (err, data) {
+        test.ok(!err);
+        test.ok(data);
+
+        test.equal(data.length, 0);
+            
+        test.done();
+    });
 };
 
 exports['get status without movements'] = function (test) {

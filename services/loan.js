@@ -119,6 +119,12 @@ function getLoans(cb) {
     store.find(cb);
 }
 
+function getOpenLoans(cb) {
+    var store = db.store('loans');
+    
+    store.find({ status: 'open' }, cb);
+}
+
 function updateLoan(id, data, cb) {
     var store = db.store('loans');
     
@@ -335,6 +341,7 @@ module.exports = {
     getLoanById: getLoanById,
     
     getLoans: getLoans,
+    getOpenLoans: getOpenLoans,
     getLoansByUser: getLoansByUser,
     
     updateLoan: updateLoan,

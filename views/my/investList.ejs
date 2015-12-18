@@ -1,0 +1,55 @@
+<% var title = 'Invertir' %>
+<% include ../header %>
+    <h1>Invertir</h1>
+    <div class='row'>
+        <div class='actions col-md-8'>
+            <a href="/my" class="btn btn-info">Mi Cuenta</a>
+        </div>
+    </div>
+    <div class='row'>
+        <div>Puede invertir en distintas oportunidades</div>
+    </div>
+    <h2>Solicitudes de Préstamo</h2>
+    <div class='row'>
+        <table class='table table-striped'>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Código</th>
+                    <th style='text-align: right'>Monto</th>
+                    <th style='text-align: right'>Cuotas</th>
+                    <th style='text-align: right'>Tasa Mensual</th>
+                    <th>Fecha/Hora Creación</th>
+                </tr>
+            </thead>
+            <tbody>
+<% loans.forEach(function (loan) { %>
+                <tr>
+                    <td><a href="/my/oloan/<%= loan.id %>">Ver</a></td>
+                    <td><%= loan.code %></td>
+                    <td style='text-align: right'><%= loan.amount.toFixed(2) %></td>
+                    <td style='text-align: right'><%= loan.periods %></td>
+                    <td style='text-align: right'><%= loan.monthlyRate.toFixed(2) %></td>
+                    <td><%= loan.created %></td>
+                </tr>
+<% }); %>
+           </tbody>
+        </table>
+    </div>
+    
+    <h2>Departamentos desde el Pozo</h2>
+    <div class='row'>
+        <div>Próximamente</div>
+    </div>
+    
+    <h2>Emprendimientos Tecnológicos</h2>
+    <div class='row'>
+        <div>Próximamente</div>
+    </div>
+    
+    <h2>Vendedores Mercado Libre</h2>
+    <div class='row'>
+        <p>Próximamente</p>
+    </div>
+
+<% include ../footer %>

@@ -3,6 +3,7 @@ var async = require('simpleasync');
 
 var loanService = require('../../services/loan');
 var translate = require('../../utils/translate');
+var dates = require('../../utils/dates');
 
 function listLoans(req, res) {
     var model = { }
@@ -49,8 +50,7 @@ function viewLoan(req, res) {
         loanService.getLoanStatusToDate(id, dates.todayString(), next);
     })
     .then(function (status, next) {
-        if (status)
-            model.status = status;
+        model.status = status;
 
         res.render('admin/loanView', model);
     })
