@@ -1,7 +1,7 @@
 
 "use strict"
 
-var tests = require('../../test/services/loan');
+var tests = require('../../test/services/user');
 var db = require('../../utils/db');
 
 exports['use db'] = function (test) {
