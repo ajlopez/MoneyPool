@@ -46,6 +46,9 @@ function translateUser(code, cb) {
 function translateUsers(items, cb) {
     var users = {};
     each(items, function (item, next) {
+        if (!item.user)
+            return next();
+        
         if (users[item.user]) {
             item.userDescription = users[item.user];
             return next();

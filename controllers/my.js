@@ -334,6 +334,8 @@ module.exports = {
     createNote: createNote,
     
     newPayment: newPayment,
-    createPayment: createPayment
+    createPayment: createPayment,
+    
+    listMyMovements: listMyMovements
 };
 

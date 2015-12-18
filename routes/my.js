@@ -22,4 +22,6 @@ router.post('/oloan/:id/note/new', controller.createNote);
 router.get('/loan/:id/pay/new', controller.newPayment);
 router.post('/loan/:id/pay/new', controller.createPayment);
 
+router.get('/movement', controller.listMyMovements);
+
 module.exports = router;
