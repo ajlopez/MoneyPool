@@ -137,17 +137,24 @@ function rejectLoan(id, cb) {
 
 function acceptLoan(id, cb) {
     var loan;
+    var notes;
+    var totalNotes;
     var pays;
     var pdates;
     var accepted = dates.nowString();
     
     async()
     .then(function (data, next) {
+        noteService.getNotesByLoan(id, next);
+    })
+    .then(function (data, next) {
+        notes = sl.where(data, { status: 'open' });
+        totalNotes = sl.sum(notes, ['amount']).amount;
         getLoanById(id, next);
     })
     .then(function (data, next) {
         loan = data;
-        updateLoan(id, { status: 'accepted', accepted: accepted, date: dates.removeTime(accepted) }, next);
+        updateLoan(id, { status: 'accepted', amount: totalNotes, accepted: accepted, date: dates.removeTime(accepted) }, next);
     })
     .then(function (data, next) {
         noteService.updateNote({ loan: id, status: 'open' }, { status: 'accepted' }, next);
@@ -163,10 +170,7 @@ function acceptLoan(id, cb) {
         }, next);
     })
     .then(function (data, next) {
-        noteService.getNotesByLoan(id, next);
-    })
-    .then(function (data, next) {
-        each(data, function (note, next) {
+        each(notes, function (note, next) {
             movementService.newMovement({
                 user: note.user,
                 debit: note.amount,

@@ -20,12 +20,16 @@
 <% movements.forEach(function (movement) { %>
                 <tr>
                     <td><%= movement.datetime %></td>
-                    <td><%= movement.user %></td>
+                    <td><a href="/admin/user/<%= movement.user %>"><%= movement.userDescription %></a></td>
                     <td><%= movement.currency %></td>
                     <td style='text-align: right'><%= movement.credit.toFixed(2) %></td>
                     <td style='text-align: right'><%= movement.debit.toFixed(2) %></td>
-                    <td><%= movement.type %></td>
-                    <td><%= movement.loan %></td>
+                    <td><%= movement.typeDescription %></td>
+<% if (movement.loan != null) { %>
+                    <td><a href="/admin/loan/<%= movement.loan %>"><%= movement.loanDescription %></td>
+<% } else { %>
+                    <td></td>
+<% } %>
 <% if (movement.capital != null) { %>
                     <td style='text-align: right'><%= movement.capital.toFixed(2) %></td>
 <% } else { %>

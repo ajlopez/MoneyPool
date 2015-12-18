@@ -14,6 +14,7 @@ function listMovements(req, res) {
     })
     .then(function (data, next) {
         model.movements = data;
+        translate.movtypes(model.movements);
         translate.users(model.movements, next);
     })
     .then(function (data, next) {

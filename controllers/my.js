@@ -82,7 +82,10 @@ function listMyMovements(req, res) {
     })
     .then(function (movements, next) {
         model.movements = sl.sort(movements, 'datetime');
-
+        translate.movtypes(model.movements);
+        translate.loans(model.movements, next);
+    })
+    .then(function (data, next) {
         res.render('my/movementList', model);
     })
     .fail(function (err) {
