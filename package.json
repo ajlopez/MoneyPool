@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "simpleunit ./test -r"
+    "test": "simpleunit ./test -r",
+    "testdb": "simpleunit ./testdb -r"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
