@@ -11,6 +11,7 @@ var myRoutes = require('./routes/my');
 var adminRoutes = require('./routes/admin.js');
 var adminUserRoutes = require('./routes/admin/user');
 var adminLoanRoutes = require('./routes/admin/loan');
+var adminMovementRoutes = require('./routes/admin/movement');
 
 var app = express();
 
@@ -68,6 +69,7 @@ app.all('/admin/*', requiredAdminAuthentication);
 app.use('/admin', adminRoutes);
 app.use('/admin/user', adminUserRoutes);
 app.use('/admin/loan', adminLoanRoutes);
+app.use('/admin/movement', adminMovementRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

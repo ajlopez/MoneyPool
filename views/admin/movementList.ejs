@@ -1,0 +1,42 @@
+<% var title = 'Movimientos' %>
+<% include header %>
+    <h1>Movimientos</h1>
+    <div class='row'>
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th>Fecha/Hora</th>
+                    <th>Usuario</th>
+                    <th style='text-align: right'>Ingreso</th>
+                    <th style='text-align: right'>Egreso</th>
+                    <th>Tipo</th>
+                    <th>Préstamo</th>
+                    <th>Capital</th>
+                    <th>Interés</th>
+                </tr>
+            </thead>
+            <tbody>
+<% movements.forEach(function (movement) { %>
+                <tr>
+                    <td><%= movement.datetime %></td>
+                    <td><%= movement.user %></td>
+                    <td style='text-align: right'><%= movement.credit.toFixed(2) %></td>
+                    <td style='text-align: right'><%= movement.debit.toFixed(2) %></td>
+                    <td><%= movement.type %></td>
+                    <td><%= movement.loan %></td>
+<% if (movement.capital != null) { %>
+                    <td style='text-align: right'><%= movement.capital.toFixed(2) %></td>
+<% } else { %>
+                    <td></td>
+<% } %>
+<% if (movement.interest != null) { %>
+                    <td style='text-align: right'><%= movement.interest.toFixed(2) %></td>
+<% } else { %>
+                    <td></td>
+<% } %>
+                </tr>
+<% }); %>
+            </tbody>
+        </table>
+    </div>
+<% include footer %>
