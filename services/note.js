@@ -2,14 +2,14 @@
 var db = require('../utils/db');
 var dates = require('../utils/dates');
 
-var store = db.createStore('notes');
-
 function clearNotes(cb) {
-    store = db.createStore('notes');
+    db.createStore('notes');
     cb(null, null);
 };
 
 function newNote(note, cb) {
+    var store = db.store('notes');
+
     if (!note.status)
         note.status = 'open';
     if (!note.currency)
@@ -19,22 +19,32 @@ function newNote(note, cb) {
 };
 
 function getNoteById(id, cb) {
+    var store = db.store('notes');
+
     store.get(id, cb);
 }
 
 function getNotesByUser(userId, cb) {
+    var store = db.store('notes');
+
     store.find({ user: userId }, cb);
 }
 
 function getNotesByLoan(loanId, cb) {
+    var store = db.store('notes');
+
     store.find({ loan: loanId }, cb);
 }
 
 function getNotes(cb) {
+    var store = db.store('notes');
+
     store.find(cb);
 }
 
 function updateNote(id, data, cb) {
+    var store = db.store('notes');
+
     store.update(id, data, cb);
 }
 
