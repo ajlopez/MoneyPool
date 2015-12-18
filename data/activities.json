@@ -1,0 +1,13 @@
+{
+    "ABO": { "description": "Abogado/a" },
+    "MED": { "description": "Médico/a" },
+    "ING": { "description": "Ingeniero/a" },
+    "ARQ": { "description": "Arquitecto/a" },
+    "PRS": { "description": "Profesional de la Salud" },
+    "PRE": { "description": "Profesional de la Educación" },
+    "PRF": { "description": "Otro/a Profesional" },
+    "IT": { "description": "Informática" },
+    "DI": { "description": "Diseño Industrial" },
+    "DG": { "description": "Diseño Gráfico" },
+    "DES": { "description": "Desocupado" }
+}
