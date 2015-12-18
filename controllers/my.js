@@ -10,6 +10,7 @@ var movementService = require('../services/movement');
 var translate = require('../utils/translate');
 var dates = require('../utils/dates');
 var scorings = require('../data/scorings');
+var userdata = require('../data/userdata');
 
 function getCurrentUserId(req) {
     var id = req.session.user.id;
@@ -41,6 +42,7 @@ function viewMyUser(req, res) {
     .then(function (user, next) {
         user.scoringDescription = translate.scoring(user.scoring);
         model.user = user;
+        model.userdata = userdata;
 
         res.render('my/userView', model);
     })

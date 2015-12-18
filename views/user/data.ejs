@@ -1,0 +1,36 @@
+<% var title = 'Datos para Calificación' %>
+<% include ../header %>
+    <h1>Datos para Calificación</h1>
+
+    <div class='row'>
+        <div class='col-md-8'>
+            Sólo necesarios si va a solicitar un préstamo
+        </div>
+    </div>
+
+    <div class='row'>
+        <div class='col-md-4'>
+            <form method="post">
+<% for (var key in userdata) { var udata = userdata[key];  %>
+              <div class="form-group">
+                <label for="<%= udata.name %>"><%= udata.title %></label>
+<% if (udata.values) { %>
+                <select  class="form-control" name="<%= udata.name %>" id="<%= udata.name %>">
+<% for (var vkey in values[udata.values]) {
+    var val = values[udata.values][vkey].description;
+%>
+                    <option value="<%= vkey%>"><%= val %></option>
+<% }; %>  
+                </select>
+<% } else { %>
+                <input type="<% udata.type ? udata.type : 'text' %>" class="form-control" name="<%= udata.name %>" id="<%= udata.name %>">
+<% } %>
+              </div>
+<% }; %>
+              <button type="submit" class="btn btn-default">Grabar</button>
+              <a href="/my" class="btn btn-default">Saltear</button>
+            </form>
+        </div>
+    </div>
+    
+<% include ../footer %>

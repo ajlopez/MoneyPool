@@ -1,0 +1,39 @@
+[
+    {
+        "name": "activity",
+        "title": "Actividad",
+        "values": "activities"
+    },
+    {
+        "name": "genre",
+        "title": "Género",
+        "values": "genres"
+    },
+    {
+        "name": "born",
+        "title": "Año de Nacimiento",
+        "values": "years"
+    },
+    {
+        "name": "income",
+        "title": "Ingresos Mensuales",
+        "type": "number"
+    },
+    {
+        "name": "twitter",
+        "title": "Cuenta de Twitter"
+    },
+    {
+        "name": "facebook",
+        "title": "Cuenta de Facebook"
+    },
+    {
+        "name": "meli",
+        "title": "Cuenta de Mercado Libre"
+    },
+    {
+        "name": "description",
+        "title": "Descripción",
+        "memo": true
+    }
+]

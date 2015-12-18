@@ -26,6 +26,16 @@
                 <td>Calificación</td>
                 <td><%= user.scoring %> <%= user.scoringDescription %></td>
             </tr>
+<% if (typeof userdata !== 'undefined' && userdata.length) { 
+    userdata.forEach(function (udata) {
+        if (!user[udata.name])
+            return;
+        %>
+            <tr>
+                <td><%= udata.title %></td>
+                <td><%= user[udata.name] %></td>
+            </tr>
+<% }) } %>
         </table>
     </div>
     <h2>Operar</h2>

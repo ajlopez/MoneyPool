@@ -6,6 +6,8 @@ var loanService = require('../../services/loan');
 var translate = require('../../utils/translate');
 var scorings = require('../../data/scorings');
 
+var userdata = require('../../data/userdata.json');
+
 function listUsers(req, res) {
     var model = { }
     async()
@@ -45,6 +47,8 @@ function viewUser(req, res) {
         model.loans = loans;
         
         model.scorings = [];
+        
+        model.userdata = userdata;
         
         for (var scoring in scorings)
             model.scorings.push(scoring);
