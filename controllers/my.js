@@ -14,6 +14,15 @@ function getCurrentUserId(req) {
     return id;
 }
 
+function getId(req) {
+    var id = req.params.id;
+
+    if (id.length && id.length < 6)
+        id = parseInt(id);
+        
+    return id;
+}
+
 function viewMyUser(req, res) {
     var model = { };
     
@@ -83,9 +92,33 @@ function createMyLoan(req, res) {
     .run();
 }
 
+function viewMyLoan(req, res) {
+    var id = getId(req);
+
+    async()
+    .then(function (data, next) {
+        loanService.getLoanById(id, next);
+    })
+    .then(function (loan, next) {
+        if (!loan || loan.user != getCurrentUserId(req))
+            return res.redirect('/my');
+        
+        var model = {
+            loan: loan
+        };
+        
+        res.render('my/loanView', model);
+    })
+    .fail(function (err) {
+        res.render('error', { error: err });
+    })
+    .run();
+}
+
 module.exports = {
     viewMyUser: viewMyUser,
     listMyLoans: listMyLoans,
+    viewMyLoan: viewMyLoan,
     newMyLoan: newMyLoan,
     createMyLoan: createMyLoan
 };

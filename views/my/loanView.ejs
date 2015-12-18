@@ -1,0 +1,33 @@
+<% var title = 'Mi Préstamo' %>
+<% include ../header %>
+    <h1>Mi Préstamo</h1>
+    <div class='row'>
+        <div class='actions col-md-8'>
+            <a href="/my" class="btn btn-info">Mi Cuenta</a>
+            <a href="/my/loan" class="btn btn-info">Mis Préstamos</a>
+            <a href="/my/note" class="btn btn-info">Mis Inversiones</a>
+            <a href="/my/movement" class="btn btn-info">Mis Movimientos</a>
+        </div>
+    </div>
+    <div class='row'>
+        <table class='table view-data'>
+            <tr>
+                <td>Código</td>
+                <td><%= loan.code %></td>
+            </tr>
+            <tr>
+                <td>Monto</td>
+                <td><%= loan.amount.toFixed(2) %></td>
+            </tr>
+            <tr>
+                <td>Fecha/Hora Creación</td>
+                <td><%= loan.created %></td>
+            </tr>
+            <tr>
+                <td>Estado</td>
+                <td><%= loan.statusDescription %></td>
+            </tr>
+        </table>
+    </div>
+
+<% include ../footer %>
