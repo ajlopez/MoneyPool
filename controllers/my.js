@@ -63,8 +63,29 @@ function newMyLoan(req, res) {
     res.render('my/loanNew', model);
 }
 
+function createMyLoan(req, res) {
+    var loan = { };
+    
+    loan.amount = parseFloat(req.body.amount);
+    loan.periods = parseInt(req.body.periods);
+    loan.user = getCurrentUserId(req);
+
+    async()
+    .then(function (data, next) {
+        loanService.newLoan(loan, next);
+    })
+    .then(function (data, next) {
+        res.redirect('/my/loan');
+    })
+    .fail(function (err) {
+        res.render('error', { error: err });
+    })
+    .run();
+}
+
 module.exports = {
     viewMyUser: viewMyUser,
     listMyLoans: listMyLoans,
-    newMyLoan: newMyLoan
+    newMyLoan: newMyLoan,
+    createMyLoan: createMyLoan
 };
