@@ -141,6 +141,32 @@ exports['get open loans'] = function (test) {
     });
 };
 
+exports['simulate loan payments'] = function (test) {
+    test.async();
+    
+    var today = dates.todayString();
+    
+    async()
+    .then(function (data, next) {
+        loanService.getLoanById(loanId, next);
+    })
+    .then(function (data, next) {
+        loan = data;
+        loanService.simulateLoanPayments(loanId, today, next);
+    })
+    .then(function (payments, next) {
+        test.equal(payments.length, 12);
+        
+        var paymentDates = dates.calculateDates(today, loan.days, loan.periods);
+        
+        for (var k = 1; k <= 12; k++)
+            sl.exist(payments, { loan: loanId, date: paymentDates[k - 1], order: k });
+        
+        test.done();
+    })
+    .run();
+}
+
 exports['accept loan'] = function (test) {
     test.async();
     

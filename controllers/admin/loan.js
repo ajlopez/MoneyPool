@@ -4,6 +4,7 @@ var sl = require('simplelists');
 
 var loanService = require('../../services/loan');
 var noteService = require('../../services/note');
+var movementService = require('../../services/movement');
 var translate = require('../../utils/translate');
 var dates = require('../../utils/dates');
 
@@ -14,6 +15,7 @@ function listLoans(req, res) {
         loanService.getLoans(next);
     })
     .then(function (data, next) {
+        data = sl.sort(data, 'datetime');
         model.loans = data;
         translate.statuses(model.loans);
         translate.users(model.loans, next);
@@ -67,6 +69,14 @@ function viewLoan(req, res) {
 
         translate.statuses(notes);
         translate.users(notes, next);
+    })
+    .then(function (notes, next) {
+        movementService.getMovementsByLoan(id, next);
+    })
+    .then(function (movements, next) {
+        model.movements = movements;
+        sl.sort(movements, 'datetime');
+        translate.users(movements, next);
     })
     .then(function (notes, next) {
         res.render('admin/loanView', model);

@@ -140,4 +140,45 @@
     </div>
 <% } %>
 
+
+<% if (movements && movements.length) { %>
+    <h2>Movimientos</h2>
+    <div class='row'>
+        <table class='table table-striped'>
+            <thead>
+                <tr>
+                    <th>Fecha/Hora</th>
+                    <th>Usuario</th>
+                    <th style='text-align: right'>Ingreso</th>
+                    <th style='text-align: right'>Egreso</th>
+                    <th>Tipo</th>
+                    <th style='text-align: right'>Capital</th>
+                    <th style='text-align: right'>Interés</th>
+                </tr>
+            </thead>
+            <tbody>
+<% movements.forEach(function (movement) { %>
+                <tr>
+                    <td><%= movement.datetime %></td>
+                    <td><a href="/admin/user/<%= movement.user %>"><%= movement.userDescription %></a></td>
+                    <td style='text-align: right'><%= movement.credit.toFixed(2) %></td>
+                    <td style='text-align: right'><%= movement.debit.toFixed(2) %></td>
+                    <td><%= movement.typeDescription %></td>
+<% if (movement.capital != null) { %>
+                    <td style='text-align: right'><%= movement.capital.toFixed(2) %></td>
+<% } else { %>
+                    <td></td>
+<% } %>
+<% if (movement.interest != null) { %>
+                    <td style='text-align: right'><%= movement.interest.toFixed(2) %></td>
+<% } else { %>
+                    <td></td>
+<% } %>
+                </tr>
+<% }); %>
+           </tbody>
+        </table>
+    </div>
+<% } %>
+
 <% include footer %>

@@ -135,6 +135,35 @@ function rejectLoan(id, cb) {
     updateLoan(id, { status: 'rejected', rejected: dates.nowString() }, cb);
 }
 
+function simulateLoanPayments(id, today, cb) {
+    var loan;
+    var pays;
+    var pdates;
+    
+    async()
+    .then(function (data, next) {
+        getLoanById(id, next);
+    })
+    .then(function (loan, next) {
+        var k = 0;
+        var pays = finances.calculatePayments(loan.amount, loan.monthlyRate, loan.days, loan.periods);
+        var pdates = dates.calculateDates(today, loan.days, loan.periods);
+        
+        var payments = [];
+        
+        pays.forEach(function (pay) {
+            var pdate = pdates[k++];
+            payments.push({ loan: loan.id, date: pdate, capital: pay.capital, interest: pay.interest, order: k });
+        });
+        
+        cb(null, payments);
+    })
+    .fail(function (err) {
+        cb(err, null);
+    })
+    .run();
+}
+
 function acceptLoan(id, cb) {
     var loan;
     var notes;
@@ -154,6 +183,7 @@ function acceptLoan(id, cb) {
     })
     .then(function (data, next) {
         loan = data;
+        loan.amount = totalNotes;
         updateLoan(id, { status: 'accepted', amount: totalNotes, accepted: accepted, date: dates.removeTime(accepted) }, next);
     })
     .then(function (data, next) {
@@ -350,6 +380,7 @@ module.exports = {
     getLoans: getLoans,
     getOpenLoans: getOpenLoans,
     getLoansByUser: getLoansByUser,
+    simulateLoanPayments: simulateLoanPayments,
     
     updateLoan: updateLoan,
     rejectLoan: rejectLoan,
