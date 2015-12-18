@@ -7,6 +7,7 @@
                 <tr>
                     <th>Fecha/Hora</th>
                     <th>Usuario</th>
+                    <th>Moneda</th>
                     <th style='text-align: right'>Ingreso</th>
                     <th style='text-align: right'>Egreso</th>
                     <th>Tipo</th>
@@ -20,6 +21,7 @@
                 <tr>
                     <td><%= movement.datetime %></td>
                     <td><%= movement.user %></td>
+                    <td><%= movement.currency %></td>
                     <td style='text-align: right'><%= movement.credit.toFixed(2) %></td>
                     <td style='text-align: right'><%= movement.debit.toFixed(2) %></td>
                     <td><%= movement.type %></td>

@@ -1,0 +1,8 @@
+{
+    "loan": { "description": "Préstamo" },
+    "note": { "description": "Inversión" },
+    "payment": { "description": "Pago" },
+    "return": { "description": "Retorno" },
+    "deposit": { "description": "Depósito" },
+    "withdraw": { "description": "Retiro" }
+}

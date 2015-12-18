@@ -9,8 +9,9 @@ var userService = require('../../services/user');
 
 db.useMemory();
 
-var statuses = require('../../data/statuses');
-var scorings = require('../../data/scorings');
+var statuses = require('../../data/statuses.json');
+var movtypes = require('../../data/movtypes.json');
+var scorings = require('../../data/scorings.json');
 
 var users;
 
@@ -68,6 +69,24 @@ exports['translate statuses'] = function (test) {
     
     test.equal(data[0].statusDescription, translate.status(data[0].status));
     test.equal(data[1].statusDescription, translate.status(data[1].status));
+};
+
+exports['translate movement type'] = function (test) {
+    for (var key in movtypes) {
+        test.equal(translate.movtype(key), movtypes[key].description);
+    }
+};
+
+exports['translate movement types'] = function (test) {
+    var data = [
+        { status: 'note' },
+        { status: 'loan' }
+    ];
+    
+    translate.movtypes(data);
+    
+    test.equal(data[0].typeDescription, translate.movtype(data[0].type));
+    test.equal(data[1].typeDescription, translate.movtype(data[1].type));
 };
 
 exports['translate user'] = function (test) {

@@ -1,5 +1,6 @@
 
 var statuses = require('../data/statuses.json');
+var movtypes = require('../data/movtypes.json');
 var scorings = require('../data/scorings.json');
 var each = require('./each');
 
@@ -13,6 +14,23 @@ function translateStatus(code) {
 function translateStatuses(items) {
     items.forEach(function (item) {
         item.statusDescription = translateStatus(item.status);
+    });
+}
+
+function translateMovType(code) {
+    if (code == null)
+        return null;
+    
+    if (movtypes[code] && movtypes[code].description)
+        return movtypes[code].description;
+        
+    return code;
+}
+
+function translateMovTypes(items) {
+    items.forEach(function (item) {
+        if (item.type != null)
+            item.typeDescription = translateMovType(item.type);
     });
 }
 
@@ -71,6 +89,8 @@ function translateUsers(items, cb) {
 module.exports = {
     status: translateStatus,
     statuses: translateStatuses,
+    movtype: translateMovType,
+    movtypes: translateMovTypes,
     scoring: translateScoring,
     scorings: translateScorings,
     user: translateUser,
