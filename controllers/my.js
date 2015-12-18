@@ -120,7 +120,22 @@ function viewMyLoan(req, res) {
     })
     .then(function (status, next) {
         model.status = status;
-            
+        
+        noteService.getNotesByLoan(id, next);
+    })
+    .then(function (notes, next) {
+        model.notes = notes;
+        
+        if (notes)
+            model.totalNotes = sl.sum(notes, ['amount']).amount;
+        
+        if (!notes)
+            return next(null, null);
+
+        translate.statuses(notes);
+        translate.users(notes, next);
+    })
+    .then(function (notes, next) {
         res.render('my/loanView', model);
     })
     .fail(function (err) {
@@ -233,7 +248,8 @@ function viewOpenLoan(req, res) {
         
         if (!notes)
             return next(null, null);
-            
+
+        translate.statuses(notes);
         translate.users(notes, next);
     })
     .then(function (notes, next) {

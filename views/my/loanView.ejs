@@ -93,5 +93,35 @@
         </table>
     </div>
 <% } %>
+<% if (notes && notes.length) { %>
+    <h2>Inversiones</h2>
+    <div class='row'>
+        <table class='table table-striped'>
+            <thead>
+                <tr>
+                    <th>Fecha/Hora</th>
+                    <th style='text-align: right'>Monto</th>
+                    <th>Inversor</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+<% notes.forEach(function (note) { %>
+                <tr>
+                    <td><%= note.datetime %></td>
+                    <td style='text-align: right'><%= note.amount.toFixed(2) %></td>
+                    <td><a href="/my/ouser/<%= note.user %>"><%= note.userDescription %></a></td>
+                    <td><%= note.statusDescription %></a></td>
+                </tr>
+<% }); %>
+                <tr>
+                    <td>Total</td>
+                    <td style='text-align: right'><%= totalNotes.toFixed(2) %></td>
+                    <td></td>
+                </tr>
+           </tbody>
+        </table>
+    </div>
+<% } %>
 
 <% include ../footer %>
