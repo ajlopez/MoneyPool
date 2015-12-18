@@ -66,6 +66,75 @@
                     <td style='text-align: right'><%= payment.canceled.toFixed(2) %></td>
                 </tr>
 <% }); %>
+                <tr>
+                    <td colspan=2>Totales</td>
+                    <td style='text-align: right'><%= status.totals.capital.toFixed(2) %></td>
+                    <td style='text-align: right'><%= status.totals.interest.toFixed(2) %></td>
+                    <td style='text-align: right'><%= (status.totals.capital + status.totals.interest).toFixed(2) %></td>
+                    <td style='text-align: right'><%= status.totals.canceled.toFixed(2) %></td>
+                </tr>
+           </tbody>
+        </table>
+    </div>
+<% } %>
+<% if (notes && notes.length) { %>
+    <h2>Inversiones</h2>
+    <div class='row'>
+        <table class='table table-striped'>
+            <thead>
+                <tr>
+                    <th>Fecha/Hora</th>
+                    <th style='text-align: right'>Monto</th>
+                    <th>Inversor</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+<% notes.forEach(function (note) { %>
+                <tr>
+                    <td><%= note.datetime %></td>
+                    <td style='text-align: right'><%= note.amount.toFixed(2) %></td>
+                    <td><a href="/admin/user/<%= note.user %>"><%= note.userDescription %></a></td>
+                    <td><%= note.statusDescription %></a></td>
+                </tr>
+<% }); %>
+                <tr>
+                    <td>Total</td>
+                    <td style='text-align: right'><%= totalNotes.toFixed(2) %></td>
+                    <td></td>
+                </tr>
+           </tbody>
+        </table>
+    </div>
+<% } %>
+
+<% if (status && status.movements && status.movements.length) { %>
+    <h2>Pagos</h2>
+    <div class='row'>
+        <table class='table table-striped'>
+            <thead>
+                <tr>
+                    <th>Fecha/Hora</th>
+                    <th style='text-align: right'>Monto</th>
+                    <th style='text-align: right'>Capital</th>
+                    <th style='text-align: right'>Interés</th>
+                </tr>
+            </thead>
+            <tbody>
+<% status.movements.forEach(function (movement) { %>
+                <tr>
+                    <td><%= movement.datetime %></td>
+                    <td style='text-align: right'><%= movement.amount.toFixed(2) %></td>
+                    <td style='text-align: right'><%= movement.capital.toFixed(2) %></td>
+                    <td style='text-align: right'><%= movement.interest.toFixed(2) %></td>
+                </tr>
+<% }); %>
+                <tr>
+                    <td>Totales</td>
+                    <td style='text-align: right'><%= status.movtotals.amount.toFixed(2) %></td>
+                    <td style='text-align: right'><%= status.movtotals.capital.toFixed(2) %></td>
+                    <td style='text-align: right'><%= status.movtotals.interest.toFixed(2) %></td>
+                </tr>
            </tbody>
         </table>
     </div>

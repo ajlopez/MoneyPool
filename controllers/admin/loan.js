@@ -1,7 +1,9 @@
 
 var async = require('simpleasync');
+var sl = require('simplelists');
 
 var loanService = require('../../services/loan');
+var noteService = require('../../services/note');
 var translate = require('../../utils/translate');
 var dates = require('../../utils/dates');
 
@@ -51,7 +53,22 @@ function viewLoan(req, res) {
     })
     .then(function (status, next) {
         model.status = status;
+        
+        noteService.getNotesByLoan(id, next);
+    })
+    .then(function (notes, next) {
+        model.notes = notes;
+        
+        if (notes)
+            model.totalNotes = sl.sum(notes, ['amount']).amount;
+        
+        if (!notes)
+            return next(null, null);
 
+        translate.statuses(notes);
+        translate.users(notes, next);
+    })
+    .then(function (notes, next) {
         res.render('admin/loanView', model);
     })
     .fail(function (err) {
