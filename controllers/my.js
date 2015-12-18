@@ -57,7 +57,14 @@ function listMyLoans(req, res) {
     .run();
 }
 
+function newMyLoan(req, res) {
+    var model = { };
+
+    res.render('my/loanNew', model);
+}
+
 module.exports = {
     viewMyUser: viewMyUser,
-    listMyLoans: listMyLoans
+    listMyLoans: listMyLoans,
+    newMyLoan: newMyLoan
 };

@@ -1,10 +1,12 @@
 <% var title = 'Mi Cuenta' %>
 <% include ../header %>
     <h1>Mi Cuenta</h1>
-    <div class='row actions'>
-        <a href="/my/loan" class="btn btn-info">Mis Préstamos</a>
-        <a href="/my/note" class="btn btn-info">Mis Inversiones</a>
-        <a href="/my/movement" class="btn btn-info">Mis Movimientos</a>
+    <div class='row'>
+        <div class='actions col-md-8'>
+            <a href="/my/loan" class="btn btn-info">Mis Préstamos</a>
+            <a href="/my/note" class="btn btn-info">Mis Inversiones</a>
+            <a href="/my/movement" class="btn btn-info">Mis Movimientos</a>
+        </div>
     </div>
     <div class='row'>
         <table class='table view-data'>
@@ -27,10 +29,12 @@
         </table>
     </div>
     <h2>Operar</h2>
-    <div class='row actions'>
+    <div class='row'>
+        <div class='actions col-md-8'>
         <a href="/my/loan/new" class="btn btn-primary">Solicitar Préstamo</a>
         <a href="/my/loan/pay" class="btn btn-primary">Pagar Cuota</a>
         <a href="/my/note/new" class="btn btn-primary">Invertir</a>
+        </div>
     </div>
 
 <% include ../footer %>

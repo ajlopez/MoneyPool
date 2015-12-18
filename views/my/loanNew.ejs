@@ -1,0 +1,37 @@
+<% var title = 'Solicitar Préstamo' %>
+<% include ../header %>
+    <h1>Solicitar Préstamo</h1>
+    <div class='row'>
+        <div class='actions col-md-6'>
+            <a href="/my" class="btn btn-info">Mi Cuenta</a>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='col-md-6'>
+            <form method="post">
+              <div class="form-group">
+                <label for="amount">Monto</label>
+                <input type="number" required min="100" class="form-control" name="amount" id="amount" placeholder="Monto a solicitar">
+              </div>
+              <div class="form-group">
+                <label for="periods">Cuotas Mensuales</label>
+                <select name="periods" id="periods">
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                    <option>11</option>
+                    <option>12</option>
+                    <option>18</option>
+                    <option>24</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-default">Solicitar</button>
+            </form>
+        </div>
+    </div>
+<% include ../footer %>
