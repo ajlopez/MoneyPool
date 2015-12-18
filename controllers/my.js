@@ -103,6 +103,8 @@ function viewMyLoan(req, res) {
         if (!loan || loan.user != getCurrentUserId(req))
             return res.redirect('/my');
         
+        loan.statusDescription = translate.status(loan.status);
+        
         var model = {
             loan: loan
         };

@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class='row'>
-        <table class='table view-data'>
+        <table class='table table-striped view-data'>
             <tr>
                 <td>Código</td>
                 <td><%= loan.code %></td>
@@ -18,6 +18,14 @@
             <tr>
                 <td>Monto</td>
                 <td><%= loan.amount.toFixed(2) %></td>
+            </tr>
+            <tr>
+                <td>Cantidad de Cuotas</td>
+                <td><%= loan.periods %></td>
+            </tr>
+            <tr>
+                <td>Tasa Mensual</td>
+                <td><%= loan.monthlyRate.toFixed(2) %></td>
             </tr>
             <tr>
                 <td>Fecha/Hora Creación</td>

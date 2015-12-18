@@ -9,12 +9,14 @@
         </div>
     </div>
     <div class='row'>
-        <table class='table'>
+        <table class='table table-striped'>
             <thead>
                 <tr>
                     <th></th>
                     <th>Código</th>
                     <th style='text-align: right'>Monto</th>
+                    <th style='text-align: right'>Cuotas</th>
+                    <th style='text-align: right'>Tasa Mensual</th>
                     <th>Fecha/Hora Creación</th>
                     <th>Estado</th>
                 </tr>
@@ -25,6 +27,8 @@
                     <td><a href="/my/loan/<%= loan.id %>">Ver</a></td>
                     <td><%= loan.code %></td>
                     <td style='text-align: right'><%= loan.amount.toFixed(2) %></td>
+                    <td style='text-align: right'><%= loan.periods %></td>
+                    <td style='text-align: right'><%= loan.monthlyRate.toFixed(2) %></td>
                     <td><%= loan.created %></td>
                     <td><%= loan.statusDescription %></td>
                 </tr>
