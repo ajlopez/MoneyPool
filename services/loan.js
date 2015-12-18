@@ -214,7 +214,7 @@ function getLoanStatus(id, cb) {
     })
     .then(function (data, next) {
         data = sl.where(data, { type: 'payment' });
-        var totals = sl.sum(data, ['capital', 'interest', 'amount']);
+        var totals = sl.sum(data, ['capital', 'interest', 'debit', 'credit']);
         status.movements = sl.sort(data, 'datetime');
         status.movtotals = totals;
         
@@ -305,7 +305,8 @@ function doPayment(loanId, movdata, cb) {
             user: status.loan.user,
             loan: loanId,
             currency: status.loan.currency,
-            amount: amount,
+            debit: amount,
+            credit: 0,
             capital: capital,
             interest: interest,
             type: 'payment',

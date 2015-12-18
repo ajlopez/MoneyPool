@@ -154,7 +154,8 @@ exports['make first payment'] = function (test) {
         test.equal(movement.loan, loanId);
         test.equal(movement.currency, status.loan.currency);
         test.equal(movement.user, status.loan.user);
-        test.equal(movement.amount, amount);
+        test.equal(movement.debit, amount);
+        test.equal(movement.credit, 0);
         test.equal(movement.type, 'payment');
         test.ok(dates.isDateTimeString(movement.datetime));
         test.equal(movement.capital, payments[0].capital);

@@ -246,9 +246,10 @@ exports['get status without movements'] = function (test) {
         test.ok(data.totals.interest);
 
         test.ok(data.movtotals);
-        test.equal(data.movtotals.capital, 0);
+        test.equal(data.movtotals.credit, 0);
+        test.equal(data.movtotals.debit, 0);
         test.equal(data.movtotals.interest, 0);
-        test.equal(data.movtotals.amount, 0);
+        test.equal(data.movtotals.capital, 0);
         
         test.done();
     })

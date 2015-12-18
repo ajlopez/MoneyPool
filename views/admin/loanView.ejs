@@ -124,14 +124,14 @@
 <% status.movements.forEach(function (movement) { %>
                 <tr>
                     <td><%= movement.datetime %></td>
-                    <td style='text-align: right'><%= movement.amount.toFixed(2) %></td>
+                    <td style='text-align: right'><%= movement.debit.toFixed(2) %></td>
                     <td style='text-align: right'><%= movement.capital.toFixed(2) %></td>
                     <td style='text-align: right'><%= movement.interest.toFixed(2) %></td>
                 </tr>
 <% }); %>
                 <tr>
                     <td>Totales</td>
-                    <td style='text-align: right'><%= status.movtotals.amount.toFixed(2) %></td>
+                    <td style='text-align: right'><%= status.movtotals.debit.toFixed(2) %></td>
                     <td style='text-align: right'><%= status.movtotals.capital.toFixed(2) %></td>
                     <td style='text-align: right'><%= status.movtotals.interest.toFixed(2) %></td>
                 </tr>

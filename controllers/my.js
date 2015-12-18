@@ -5,6 +5,7 @@ var sl = require('simplelists');
 var userService = require('../services/user');
 var loanService = require('../services/loan');
 var noteService = require('../services/note');
+var movementService = require('../services/movement');
 
 var translate = require('../utils/translate');
 var dates = require('../utils/dates');
@@ -63,6 +64,26 @@ function listMyLoans(req, res) {
         model.loans = loans;
 
         res.render('my/loanList', model);
+    })
+    .fail(function (err) {
+        res.render('error', { error: err });
+    })
+    .run();
+}
+
+function listMyMovements(req, res) {
+    var model = { };
+    
+    var id = getCurrentUserId(req);
+        
+    async()
+    .then(function (data, next) {
+        movementService.getMovementsByUser(id, next);
+    })
+    .then(function (movements, next) {
+        model.movements = sl.sort(movements, 'datetime');
+
+        res.render('my/movementList', model);
     })
     .fail(function (err) {
         res.render('error', { error: err });
