@@ -33,6 +33,9 @@ function translateScorings(items) {
 }
 
 function translateUser(code, cb) {
+    if (!code)
+        return cb(null, null);
+    
     var userService = require('../services/user');
     
     userService.getUserById(code, function (err, data) {
