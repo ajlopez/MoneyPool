@@ -2,13 +2,14 @@
 var movementService = require('../../services/movement');
 var dates = require('../../utils/dates');
 var async = require('simpleasync');
+var db = require('../../utils/db');
 
 var movementId;
 
-exports['clear movements'] = function (test) {
+exports['clear data'] = function (test) {
     test.async();
     
-    movementService.clearMovements(function (err, data) {
+    db.clear(function (err, data) {
         test.ok(!err);
         test.done();
     });

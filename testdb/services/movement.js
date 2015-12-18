@@ -1,7 +1,7 @@
 
 "use strict"
 
-var tests = require('../../test/services/loan');
+var tests = require('../../test/services/movement');
 var db = require('../../utils/db');
 
 exports['use db'] = function (test) {
@@ -13,7 +13,7 @@ exports['use db'] = function (test) {
         test.done();
     });
 }
-  
+
 for (var key in tests)
     exports[key] = tests[key];
     

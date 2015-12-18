@@ -4,38 +4,49 @@
 var db = require('../utils/db');
 var dates = require('../utils/dates');
 
-var store = db.createStore('movements');
-
 function clearMovements(cb) {
-    store = db.createStore('movements');
+    db.createStore('movements');
     cb(null, null);
 };
 
 function newMovement(movement, cb) {
+    var store = db.store('movements');
+
     if (!movement.currency)
         movement.currency = 'ARS';
     if (!movement.datetime)
         movement.datetime = dates.nowString();
+    
     store.add(movement, cb);
 };
 
 function getMovementById(id, cb) {
+    var store = db.store('movements');
+
     store.get(id, cb);
 }
 
 function getMovementsByUser(userId, cb) {
+    var store = db.store('movements');
+
     store.find({ user: userId }, cb);
 }
 
 function getMovementsByLoan(loanId, cb) {
+    var store = db.store('movements');
+
     store.find({ loan: loanId }, cb);
 }
 
 function getMovements(cb) {
+    var store = db.store('movements');
+
     store.find(cb);
 }
 
 function updateMovement(id, data, cb) {
+    var store = db.store('movements');
+
     store.update(id, data, cb);
 }
 
