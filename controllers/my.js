@@ -117,8 +117,7 @@ function viewMyLoan(req, res) {
         loanService.getLoanStatusToDate(id, dates.todayString(), next);
     })
     .then(function (status, next) {
-        if (status)
-            model.status = status;
+        model.status = status;
             
         res.render('my/loanView', model);
     })
