@@ -42,6 +42,16 @@ function viewLoan(req, res) {
     })
     .then(function (data, next) {
         model.loan.userDescription = data;
+                
+        if (loan.status != 'accepted')
+            return next(null, null);
+            
+        loanService.getLoanStatusToDate(id, dates.todayString(), next);
+    })
+    .then(function (status, next) {
+        if (status)
+            model.status = status;
+
         res.render('admin/loanView', model);
     })
     .fail(function (err) {

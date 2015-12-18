@@ -200,6 +200,10 @@ function getLoanStatus(id, cb) {
     .then(function (data, next) {
         status.payments = sl.sort(data, 'order');
         
+        var totals = sl.sum(data, ['capital', 'interest']);
+
+        status.totals = totals;
+        
         movementService.getMovementsByLoan(id, next);
     })
     .then(function (data, next) {
@@ -256,6 +260,10 @@ function getLoanStatusToDate(id, date, cb) {
             paidCapital += status.movements[k].capital;
             lastDate = mdate;
         }
+        
+        var totals = sl.sum(status.payments, ['canceled']);
+        
+        status.totals.canceled = totals.canceled;
             
         status.dueCapital = status.loan.amount - paidCapital;
         status.lastPayment = lastDate;

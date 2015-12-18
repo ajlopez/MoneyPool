@@ -214,6 +214,10 @@ exports['get status without movements'] = function (test) {
         test.ok(data.movements);
         test.ok(Array.isArray(data.movements));
         test.equal(data.movements.length, 0);
+
+        test.ok(data.totals);
+        test.ok(data.totals.capital);
+        test.ok(data.totals.interest);
         
         test.done();
     })
@@ -246,6 +250,11 @@ exports['get status to date'] = function (test) {
         test.equal(data.lastPayment, loan.date);
         test.equal(data.dueCapital, loan.amount);
         test.equal(data.dueInterest, payments[0].interest);
+        
+        test.ok(data.totals);
+        test.ok(data.totals.capital);
+        test.ok(data.totals.interest);
+        test.equal(data.totals.canceled, 0);
         
         test.done();
     })

@@ -82,6 +82,13 @@
                     <td style='text-align: right'><%= payment.canceled.toFixed(2) %></td>
                 </tr>
 <% }); %>
+                <tr>
+                    <td cols=2>Totales</td>
+                    <td style='text-align: right'><%= status.totals.capital.toFixed(2) %></td>
+                    <td style='text-align: right'><%= status.totals.interest.toFixed(2) %></td>
+                    <td style='text-align: right'><%= (status.totals.capital + status.totals.interest).toFixed(2) %></td>
+                    <td style='text-align: right'><%= status.totals.canceled.toFixed(2) %></td>
+                </tr>
            </tbody>
         </table>
     </div>
