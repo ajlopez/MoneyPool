@@ -1,0 +1,30 @@
+<% var title = 'Mi Cuenta' %>
+<% include ../header %>
+    <h1>Mi Cuenta</h1>
+    <div class='row actions'>
+        <a href="/my/loan" class="btn btn-info">Mis Préstamos</a>
+        <a href="/my/note" class="btn btn-info">Mis Inversiones</a>
+        <a href="/my/movement" class="btn btn-info">Mis Movimientos</a>
+    </div>
+    <div class='row'>
+        <table class='table view-data'>
+            <tr>
+                <td>Código</td>
+                <td><%= user.username %></td>
+            </tr>
+            <tr>
+                <td>Nombre</td>
+                <td><%= user.firstName %></td>
+            </tr>
+            <tr>
+                <td>Apellido</td>
+                <td><%= user.lastName %></td>
+            </tr>
+            <tr>
+                <td>Calificación</td>
+                <td><%= user.scoring %> <%= user.scoringDescription %></td>
+            </tr>
+        </table>
+    </div>
+
+<% include ../footer %>

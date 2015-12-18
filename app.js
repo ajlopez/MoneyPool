@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var userRoutes = require('./routes/user');
+var myRoutes = require('./routes/my');
 var adminRoutes = require('./routes/admin.js');
 var adminUserRoutes = require('./routes/admin/user');
 var adminLoanRoutes = require('./routes/admin/loan');
@@ -55,6 +56,8 @@ app.use('/user', userRoutes);
 
 app.all('/my', requiredAuthentication);
 app.all('/my/*', requiredAuthentication);
+
+app.use('/my', myRoutes);
 
 app.all('/admin', requiredAuthentication);
 app.all('/admin/*', requiredAuthentication);
