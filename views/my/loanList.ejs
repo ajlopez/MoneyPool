@@ -1,0 +1,34 @@
+<% var title = 'Mis Préstamos' %>
+<% include ../header %>
+    <h1>Mis Préstamos</h1>
+    <div class='row actions'>
+        <a href="/my" class="btn btn-info">Mi Cuenta</a>
+        <a href="/my/note" class="btn btn-info">Mis Inversiones</a>
+        <a href="/my/movement" class="btn btn-info">Mis Movimientos</a>
+    </div>
+    <div class='row'>
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Código</th>
+                    <th style='text-align: right'>Monto</th>
+                    <th>Fecha/Hora Creación</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+<% loans.forEach(function (loan) { %>
+                <tr>
+                    <td><a href="/my/loan/<%= loan.id %>">Ver</a></td>
+                    <td><%= loan.code %></td>
+                    <td style='text-align: right'><%= loan.amount.toFixed(2) %></td>
+                    <td><%= loan.created %></td>
+                    <td><%= loan.statusDescription %></td>
+                </tr>
+<% }); %>
+           </tbody>
+        </table>
+    </div>
+
+<% include ../footer %>

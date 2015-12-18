@@ -35,6 +35,29 @@ function viewMyUser(req, res) {
     .run();
 }
 
+function listMyLoans(req, res) {
+    var model = { };
+    
+    var id = getCurrentUserId(req);
+        
+    async()
+    .then(function (data, next) {
+        loanService.getLoansByUser(id, next);
+    })
+    .then(function (loans, next) {
+        translate.statuses(loans);
+
+        model.loans = loans;
+
+        res.render('my/loanList', model);
+    })
+    .fail(function (err) {
+        res.render('error', { error: err });
+    })
+    .run();
+}
+
 module.exports = {
-    viewMyUser: viewMyUser
+    viewMyUser: viewMyUser,
+    listMyLoans: listMyLoans
 };
