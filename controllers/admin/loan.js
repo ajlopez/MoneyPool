@@ -55,6 +55,14 @@ function viewLoan(req, res) {
     })
     .then(function (status, next) {
         model.status = status;
+                
+        if (model.loan.status != 'open')
+            return next(null, null);
+            
+        loanService.simulateLoanPayments(id, dates.todayString(), next);
+    })
+    .then(function (payments, next) {
+        model.payments = payments;
         
         noteService.getNotesByLoan(id, next);
     })

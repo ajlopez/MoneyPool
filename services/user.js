@@ -58,6 +58,10 @@ function updateUser(id, data, cb) {
     store.update(id, data, cb);
 }
 
+function qualifyUser(id, scoring, cb) {
+    updateUser(id, { scoring: scoring }, cb);
+}
+
 module.exports = {
     newUser: newUser,
     
@@ -70,6 +74,8 @@ module.exports = {
     
     updateUser: updateUser,
     
-    clearUsers: clearUsers
+    clearUsers: clearUsers,
+    
+    qualifyUser: qualifyUser
 };
 

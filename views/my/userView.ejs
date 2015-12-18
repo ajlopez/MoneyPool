@@ -31,7 +31,9 @@
     <h2>Operar</h2>
     <div class='row'>
         <div class='actions col-md-8'>
+<% if (user.scoring) { %>
         <a href="/my/loan/new" class="btn btn-primary">Solicitar Préstamo</a>
+<% } %>        
         <a href="/my/loan/pay" class="btn btn-primary">Pagar Cuota</a>
         <a href="/my/invest/do" class="btn btn-primary">Invertir</a>
         <a href="/my/deposit/new" class="btn btn-primary">Depositar</a>

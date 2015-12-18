@@ -4,6 +4,7 @@ var async = require('simpleasync');
 var userService = require('../../services/user');
 var loanService = require('../../services/loan');
 var translate = require('../../utils/translate');
+var scorings = require('../../data/scorings');
 
 function listUsers(req, res) {
     var model = { }
@@ -42,6 +43,11 @@ function viewUser(req, res) {
         translate.statuses(loans);
 
         model.loans = loans;
+        
+        model.scorings = [];
+        
+        for (var scoring in scorings)
+            model.scorings.push(scoring);
 
         res.render('admin/userView', model);
     })
@@ -65,9 +71,26 @@ function newUser(req, res) {
     });
 }
 
+function qualifyUser(req, res) {
+    var id = req.params.id;
+    
+    if (id.length && id.length < 6)
+        id = parseInt(id);
+    
+    var scoring = req.params.scoring;
+    
+    userService.qualifyUser(id, scoring, function (err, data) {
+        if (err)
+            return res.render('admin/error', { error: err });
+            
+        res.redirect('/admin/user/' + id);        
+    });
+}
+
 module.exports = {
     listUsers: listUsers,
     viewUser: viewUser,
-    newUser: newUser
+    newUser: newUser,
+    qualifyUser: qualifyUser
 };
 

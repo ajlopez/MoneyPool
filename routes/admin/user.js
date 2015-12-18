@@ -8,5 +8,6 @@ router.get('/', controller.listUsers);
 router.post('/', controller.newUser);
 
 router.get('/:id', controller.viewUser);
+router.get('/:id/scoring/:scoring', controller.qualifyUser);
 
 module.exports = router;

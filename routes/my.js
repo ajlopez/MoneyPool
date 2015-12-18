@@ -15,7 +15,7 @@ router.get('/loan/:id/reject', controller.rejectMyLoan);
 
 router.get('/invest/do', controller.doInvest);
 
-router.get('/oloan/:id', controller.viewOpenLoan);
+router.get('/oloan/:id', controller.viewOtherLoan);
 router.get('/oloan/:id/note/new', controller.newNote);
 router.post('/oloan/:id/note/new', controller.createNote);
 
@@ -23,5 +23,7 @@ router.get('/loan/:id/pay/new', controller.newPayment);
 router.post('/loan/:id/pay/new', controller.createPayment);
 
 router.get('/movement', controller.listMyMovements);
+
+router.get('/ouser/:id', controller.viewOtherUser);
 
 module.exports = router;

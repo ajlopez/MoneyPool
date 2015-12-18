@@ -1,8 +1,8 @@
 <% var title = 'Usuario' %>
-<% include header %>
+<% include ../header %>
     <h1>Usuario</h1>
     <div class='row actions'>
-        <a href="/admin/user" class="btn btn-info">Usuarios</a>
+        <a href="/my" class="btn btn-info">Mi Cuenta</a>
     </div>
     <div class='row'>
         <table class='table view-data'>
@@ -11,27 +11,10 @@
                 <td><%= user.username %></td>
             </tr>
             <tr>
-                <td>Nombre</td>
-                <td><%= user.firstName %></td>
-            </tr>
-            <tr>
-                <td>Apellido</td>
-                <td><%= user.lastName %></td>
-            </tr>
-            <tr>
                 <td>Calificación</td>
                 <td><%= user.scoring %> <%= user.scoringDescription %></td>
             </tr>
         </table>
-    </div>
-
-    <h2>Calificar</h2>
-    <div class='row'>
-        <div class='actions col-md-8'>
-<% scorings.forEach(function (scoring) { %>
-            <a href="/admin/user/<%= user.id %>/scoring/<%= scoring %>" class="btn btn-primary"><%= scoring %></a>
-<% }) %>
-        </div>
     </div>
     
 <% if (loans && loans.length) { %>    
@@ -50,7 +33,7 @@
             <tbody>
 <% loans.forEach(function (loan) { %>
                 <tr>
-                    <td><a href="/admin/loan/<%= loan.id %>">Ver</a></td>
+                    <td><a href="/my/oloan/<%= loan.id %>">Ver</a></td>
                     <td><%= loan.code %></td>
                     <td style='text-align: right'><%= loan.amount.toFixed(2) %></td>
                     <td><%= loan.created %></td>
@@ -62,4 +45,4 @@
     </div>
 <% } %>
 
-<% include footer %>
+<% include ../footer %>
