@@ -6,6 +6,7 @@ var async = require('simpleasync');
 var sl = require('simplelists');
 
 var userService = require('../../services/user');
+var loanService = require('../../services/loan');
 
 db.useMemory();
 
@@ -14,6 +15,7 @@ var movtypes = require('../../data/movtypes.json');
 var scorings = require('../../data/scorings.json');
 
 var users;
+var loans;
 
 exports['clear data'] = function (test) {
     test.async();
@@ -123,6 +125,44 @@ exports['translate users'] = function (test) {
     
     translate.users(items, function (err, data) {
         test.ok(sl.all(data, function (item) { return item.userDescription }));
+        test.done();
+    })
+};
+
+exports['translate loan'] = function (test) {
+    test.async();
+    
+    var loan;
+    
+    async()
+    .then(function (data, next) {
+        loanService.getLoans(next);
+    })
+    .then(function (data, next) {
+        loan = data[0];
+        loans = data;
+        
+        translate.loan(loan.id, next);
+    })
+    .then(function (data, next) {
+        test.ok(data);
+        test.equal(data, loan.code);
+        test.done();
+    })
+    .run();
+};
+
+exports['translate loans'] = function (test) {
+    test.async();
+    
+    var items = [];
+    
+    loans.forEach(function (loan) {
+        items.push({ loan: loan.id });
+    });
+    
+    translate.loans(items, function (err, data) {
+        test.ok(sl.all(data, function (item) { return item.loanDescription }));
         test.done();
     })
 };

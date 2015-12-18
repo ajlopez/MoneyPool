@@ -86,6 +86,42 @@ function translateUsers(items, cb) {
     }, cb);
 }
 
+function translateLoan(code, cb) {
+    if (!code)
+        return cb(null, null);
+    
+    var loanService = require('../services/loan');
+    
+    loanService.getLoanById(code, function (err, data) {
+        if (err)
+            return cb(err, null);
+            
+        cb(null, data.code);
+    });
+}
+
+function translateLoans(items, cb) {
+    var loans = {};
+    each(items, function (item, next) {
+        if (!item.loan)
+            return next();
+        
+        if (loans[item.loan]) {
+            item.loanDescription = loans[item.loan];
+            return next();
+        }
+        
+        translateLoan(item.loan, function (err, data) {
+            if (err)
+                return cb(err, null);
+                
+            loans[item.loan] = data;
+            item.loanDescription = data;
+            next();
+        });
+    }, cb);
+}
+
 module.exports = {
     status: translateStatus,
     statuses: translateStatuses,
@@ -94,5 +130,7 @@ module.exports = {
     scoring: translateScoring,
     scorings: translateScorings,
     user: translateUser,
-    users: translateUsers
+    users: translateUsers,
+    loan: translateLoan,
+    loans: translateLoans
 };
