@@ -214,7 +214,9 @@ function getLoanStatus(id, cb) {
     })
     .then(function (data, next) {
         data = sl.where(data, { type: 'payment' });
+        var totals = sl.sum(data, ['capital', 'interest', 'amount']);
         status.movements = sl.sort(data, 'datetime');
+        status.movtotals = totals;
         
         cb(null, status);
     })
