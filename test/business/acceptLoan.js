@@ -79,7 +79,7 @@ exports['new loan'] = function (test) {
 exports['new note from first investor'] = function (test) {
     test.async();
     
-    loanService.newNote(loanId, { user: eveId, amount: 600 }, function (err, data) {
+    loanService.newNote(loanId.toString(), { user: eveId.toString(), amount: 600 }, function (err, data) {
         test.ok(!err);
         test.ok(data);
         
@@ -89,13 +89,17 @@ exports['new note from first investor'] = function (test) {
             test.ok(!err);
             test.ok(data);
             
-            test.equal(data.id, eveNoteId);
-            test.equal(data.loan, loanId);
-            test.equal(data.user, eveId);
+            test.ok(db.isNativeId(data.id));
+            test.ok(db.isNativeId(data.loan));
+            test.ok(db.isNativeId(data.user));
+            
+            test.equal(data.id.toString(), eveNoteId.toString());
+            test.equal(data.loan.toString(), loanId.toString());
+            test.equal(data.user.toString(), eveId.toString());
+            
             test.equal(data.amount, 600);
             test.equal(data.currency, 'ARS');
             test.ok(dates.isDateTimeString(data.datetime));
-            test.equal(data.loan, loanId);
             
             test.done();
         });
@@ -105,7 +109,7 @@ exports['new note from first investor'] = function (test) {
 exports['new note from second investor'] = function (test) {
     test.async();
     
-    loanService.newNote(loanId, { user: abelId, amount: 400 }, function (err, data) {
+    loanService.newNote(loanId.toString(), { user: abelId.toString(), amount: 400 }, function (err, data) {
         test.ok(!err);
         test.ok(data);
         
@@ -114,13 +118,17 @@ exports['new note from second investor'] = function (test) {
         noteService.getNoteById(abelNoteId, function (err, data) {
             test.ok(!err);
             test.ok(data);
+
+            test.ok(db.isNativeId(data.id));
+            test.ok(db.isNativeId(data.user));
+            test.ok(db.isNativeId(data.loan));
+            test.equal(data.id.toString(), abelNoteId.toString());
+            test.equal(data.user.toString(), abelId.toString());
+            test.equal(data.loan.toString(), loanId.toString());
             
-            test.equal(data.id, abelNoteId);
-            test.equal(data.user, abelId);
             test.equal(data.amount, 400);
             test.equal(data.currency, 'ARS');
             test.ok(dates.isDateTimeString(data.datetime));
-            test.equal(data.loan, loanId);
             
             test.done();
         });
@@ -196,21 +204,21 @@ exports['accept loan'] = function (test) {
     .then(function (data, next) {
         test.ok(data);
         test.ok(data.length);
-        test.ok(sl.exist(data, { user: adamId, credit: 1000, debit: 0, loan: loanId, type: 'loan' }));
+        test.ok(sl.exist(data, { credit: 1000, debit: 0, type: 'loan' }));
         
         movementService.getMovementsByUser(eveId, next);
     })
     .then(function (data, next) {
         test.ok(data);
         test.ok(data.length);
-        test.ok(sl.exist(data, { user: eveId, debit: 600, credit: 0, loan: loanId, type: 'note' }));
+        test.ok(sl.exist(data, { debit: 600, credit: 0, type: 'note' }));
         
         movementService.getMovementsByUser(abelId, next);
     })
     .then(function (data, next) {
         test.ok(data);
         test.ok(data.length);
-        test.ok(sl.exist(data, { user: abelId, debit: 400, credit: 0, loan: loanId, type: 'note' }));
+        test.ok(sl.exist(data, { debit: 400, credit: 0, type: 'note' }));
         
         paymentService.getPaymentsByLoan(loanId, next);
     })
@@ -223,7 +231,7 @@ exports['accept loan'] = function (test) {
         var paymentDates = dates.calculateDates(loan.date, loan.days, loan.periods);
         
         for (var k = 1; k <= 12; k++)
-            sl.exist(data, { loan: loanId, date: paymentDates[k - 1], order: k });
+            sl.exist(data, { date: paymentDates[k - 1], order: k });
         
         test.done();
     });
@@ -253,7 +261,7 @@ exports['get status without movements'] = function (test) {
         test.ok(data);
         
         test.ok(data.loan);
-        test.equal(data.loan.id, loan.id);
+        test.equal(data.loan.id.toString(), loan.id.toString());
         
         test.ok(data.payments);
         test.ok(Array.isArray(data.payments));
@@ -290,7 +298,7 @@ exports['get status to date'] = function (test) {
         test.ok(data);
         
         test.ok(data.loan);
-        test.equal(data.loan.id, loan.id);
+        test.equal(data.loan.id.toString(), loan.id.toString());
         
         test.ok(data.payments);
         test.ok(Array.isArray(data.payments));

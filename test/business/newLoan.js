@@ -46,7 +46,7 @@ exports['create investor user'] = function (test) {
 exports['new loan'] = function (test) {
     test.async();
     
-    loanService.newLoan({ user: adamId, amount: 1000, periods: 12 }, function (err, id) {
+    loanService.newLoan({ user: adamId.toString(), amount: 1000, periods: 12 }, function (err, id) {
         test.ok(!err);
         test.ok(id);
         loanId = id;
@@ -62,8 +62,10 @@ exports['get loan by id'] = function (test) {
         test.ok(loan);
         test.equal(typeof loan, 'object');
         
-        test.equal(loan.user, adamId);
-        test.equal(loan.id, loanId);
+        test.ok(db.isNativeId(loan.user));
+        test.ok(db.isNativeId(loan.id));
+        test.equal(loan.user.toString(), adamId.toString());
+        test.equal(loan.id.toString(), loanId.toString());
         test.equal(loan.status, 'open');
         test.equal(loan.currency, 'ARS');
         test.equal(loan.order, 1);
