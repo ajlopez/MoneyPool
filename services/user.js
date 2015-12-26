@@ -6,8 +6,7 @@ var db = require('../utils/db');
 var sl = require('simplelists');
 
 function clearUsers(cb) {
-    db.createStore('users');
-    cb(null, null);
+    db.createStore('users').clear(cb);
 };
 
 function newUser(user, cb) {

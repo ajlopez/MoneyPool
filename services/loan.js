@@ -25,8 +25,7 @@ function getMaxOrder(loans) {
 }
 
 function clearLoans(cb) {
-    db.createStore('loans');
-    cb(null, null);
+    db.createStore('loans').clear(cb);
 };
 
 function newLoan(loan, cb) {
@@ -42,6 +41,8 @@ function newLoan(loan, cb) {
         loan.days = 30;
     if (!loan.created)
         loan.created = dates.nowString();
+    if (loan.user)
+        loan.user = db.toId(loan.user);
         
     var uservice = require('./user');
     var user;
@@ -77,11 +78,16 @@ function newLoan(loan, cb) {
 };
 
 function newNote(loanId, note, cb) {
+    loanId = db.toId(loanId);
+    
     var store = db.store('loans');
     
     var loan;
     
     note.loan = loanId;
+    
+    if (note.user)
+        note.user = db.toId(note.user);
     
     async()
     .then(function (data, next) {
@@ -108,7 +114,7 @@ function getLoanById(id, cb) {
 function getLoansByUser(userId, cb) {
     var store = db.store('loans');
     
-    store.find({ user: userId }, cb);
+    store.find({ user: db.toId(userId) }, cb);
 }
 
 function getLoans(cb) {
@@ -130,10 +136,14 @@ function updateLoan(id, data, cb) {
 }
 
 function rejectLoan(id, cb) {
+    id = db.toId(id);
+    
     updateLoan(id, { status: 'rejected', rejected: dates.nowString() }, cb);
 }
 
 function simulateLoanPayments(id, today, cb) {
+    id = db.toId(id);
+    
     var loan;
     var pays;
     var pdates;
@@ -162,6 +172,8 @@ function simulateLoanPayments(id, today, cb) {
 }
 
 function acceptLoan(id, cb) {
+    id = db.toId(id);
+    
     var loan;
     var notes;
     var totalNotes;
@@ -222,6 +234,8 @@ function acceptLoan(id, cb) {
 }
 
 function getLoanStatus(id, cb) {
+    id = db.toId(id);
+    
     var status = { };
     
     async()
@@ -253,6 +267,8 @@ function getLoanStatus(id, cb) {
 }
 
 function getLoanStatusToDate(id, date, cb) {
+    id = db.toId(id);
+    
     var status;
     
     async()
@@ -312,6 +328,8 @@ function getLoanStatusToDate(id, date, cb) {
 }
 
 function doPayment(loanId, movdata, cb) {
+    loanId = db.toId(loanId);
+    
     if (!movdata.datetime)
         movdata.datetime = dates.nowString();
     

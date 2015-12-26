@@ -5,8 +5,7 @@ var db = require('../utils/db');
 var dates = require('../utils/dates');
 
 function clearMovements(cb) {
-    db.createStore('movements');
-    cb(null, null);
+    db.createStore('movements').clear(cb);
 };
 
 function newMovement(movement, cb) {
@@ -16,6 +15,11 @@ function newMovement(movement, cb) {
         movement.currency = 'ARS';
     if (!movement.datetime)
         movement.datetime = dates.nowString();
+        
+    if (movement.user)
+        movement.user = db.toId(movement.user);
+    if (movement.loan)
+        movement.loan = db.toId(movement.loan);
     
     store.add(movement, cb);
 };

@@ -5,12 +5,14 @@ var db = require('../utils/db');
 var dates = require('../utils/dates');
 
 function clearPayments(cb) {
-    db.createStore('payments');
-    cb(null, null);
+    db.createStore('payments').clear(cb);
 };
 
 function newPayment(payment, cb) {
     var store = db.store('payments');
+    
+    if (payment.loan)
+        payment.user = db.toId(payment.user);
 
     store.add(payment, cb);
 };
@@ -22,6 +24,8 @@ function getPaymentById(id, cb) {
 }
 
 function getPaymentsByLoan(loanId, cb) {
+    loanId = db.toId(loanId);
+    
     var store = db.store('payments');
 
     store.find({ loan: loanId }, cb);

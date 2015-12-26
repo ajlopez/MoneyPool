@@ -1,7 +1,7 @@
 'use strict';
 
 var ostore = require('ostore');
-var mongodb = require('./mongorepo');
+var mongorepo = require('mongorepo');
 var each = require('./each');
 
 var mstores = { };
@@ -12,17 +12,28 @@ var db;
 var usedb = false;
 
 function DbStore(impl) {
-    this.get = function (id, cb) {
-        if (typeof id !== 'string')
-            return cb(null, null);
+
+    function normalize(item) {
+        if (item == null)
+            return item;
+            
+        if (Array.isArray(item))
+            item.forEach(function (it) { normalize(it); });
+        else if (item._id) {
+            item.id = item._id;
+            delete item._id;
+        }
         
+        return item;
+    }
+
+    this.get = function (id, cb) {
+        if (!mongorepo.isId(id))
+            return cb(null, null);
+            
         try {
-            impl.findById(id, function (err, item) {
-                if (item && item._id) {
-                    item.id = item._id.toString();
-                    delete item._id;
-                }
-                cb(err, item);
+            impl.find(id, function (err, item) {
+                cb(err, normalize(item));
             });
         }
         catch (err) {
@@ -33,27 +44,25 @@ function DbStore(impl) {
     this.find = function (query, projection, cb) {
         try {
             if (!projection && !cb)
-                impl.findAll(makeTransform(query));
+                impl.find(makeTransform(query));
             else if (!cb)
                 impl.find(query, makeTransform(projection));
             else
                 impl.find(query, projection, makeTransform(cb));
         }
         catch (err) {
+            if (!projection && !cb)
+                cb = query;
+            else if (!cb)
+                cb = projection;
+                
             cb(err, null);
         }
     };
 
     this.add = function (data, cb) {
         try {
-            impl.insert(data, function (err, item) {
-                if (item && item[0] && item[0]._id)
-                    return cb(err, item[0]._id.toString());
-                else if (item && item.ops && item.ops.length && item.ops[0]._id)
-                    return cb(err, item.ops[0]._id.toString());
-                else
-                    return cb(err, null);
-            });
+            impl.insert(data, cb);
         }
         catch (err) {
             cb(err, null);
@@ -69,18 +78,18 @@ function DbStore(impl) {
         }
     };
     
-    this.remove = function (id, cb) {
+    this.remove = function (query, cb) {
         try {
-            impl.remove(id, cb);
+            impl.remove(query, cb);
         }
         catch (err) {
             cb(err, null);
         }
     };
     
-    this.update = function (id, data, cb) {
+    this.update = function (query, data, cb) {
         try {
-            impl.update(id, data, cb);
+            impl.update(query, data, cb);
         }
         catch (err) {
             cb(err, null);
@@ -95,22 +104,14 @@ function DbStore(impl) {
             cb(err, null);
         }
     };
-}
-
-function makeTransform(cb) {
-    return function (err, items) {
-        if (items && items.length)
-            items.forEach(function (item) {
-                if (!item._id)
-                    return;
-                    
-                item.id = item._id.toString();
-                delete item._id;
-            });
-            
-        cb(err, items);
+    
+    function makeTransform(cb) {
+        return function (err, items) {
+            cb(err, normalize(items));
+        }
     }
 }
+
 
 function MemoryStore(impl) {
     this.get = function (id, cb) { 
@@ -182,7 +183,7 @@ function getCreateDbStore(name) {
     if (dbstores[name])
         return dbstores[name];
         
-    var store = new DbStore(mongodb.createRepository(db, name));
+    var store = new DbStore(mongorepo.createRepository(db, name));
     dbstores[name] = store;
 
     return dbstores[name];
@@ -202,7 +203,7 @@ function createMemoryStore(name) {
 }
 
 function createDbStore(name) {
-    var store = new DbStore(mongodb.createRepository(db, name));
+    var store = new DbStore(mongorepo.createRepository(db, name));
     dbstores[name] = store;
     return store;
 }
@@ -234,10 +235,13 @@ function useDb(name, config, cb) {
     config = config || { };
     usedb = true;
     dbstores = { };
-    db = mongodb.openDatabase(name, config.host || 'localhost', config.port || 27017, function (err, data) {
+    
+    mongorepo.openDatabase(name, config, function (err, data) {
         if (err)
             return cb(err, null);
-        
+            
+        db = data;
+      
         getCreateStore('users');
         getCreateStore('loans');
         getCreateStore('notes');
@@ -258,6 +262,43 @@ function useMemory() {
         db.close();
 }
 
+function toId(id) {
+    if (usedb)
+        return mongorepo.toId(id);
+
+    if (typeof id === 'string')
+        return parseInt(id);
+        
+    return id;    
+}
+
+function isNativeId(id) {
+    if (usedb)
+        return typeof id === 'object' && mongorepo.isId(id);
+        
+    return typeof id === 'number';
+}
+
+var lastid = 1000;
+var hexadigits = "0123456789abcdef";
+var lhexa = hexadigits.length;
+
+function generateId() {
+    var id = "";
+    
+    for (var k = 0; k < 24; k++)
+        id += hexadigits[Math.floor(Math.random() * lhexa)];
+        
+    return mongorepo.toId(id);
+}
+
+function newId() {
+    if (usedb)
+        return generateId();
+        
+    return ++lastid;
+}
+
 module.exports = {
     store: getCreateStore,
 
@@ -267,6 +308,10 @@ module.exports = {
     useDb: useDb,
     closeDb: closeDb,
     
-    useMemory: useMemory
+    useMemory: useMemory,
+    
+    toId: toId,
+    isNativeId: isNativeId,
+    newId: newId
 };
 

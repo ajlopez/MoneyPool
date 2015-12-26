@@ -35,7 +35,7 @@ exports['get user by id'] = function (test) {
         test.ok(user.name);
         test.equal(user.username, 'adam');
         test.equal(user.name, 'Adam');
-        test.equal(user.id, adamId);
+        test.equal(user.id.toString(), adamId.toString());
         
         test.done();
     });
@@ -63,7 +63,7 @@ exports['get user by username'] = function (test) {
         test.ok(user.name);
         test.equal(user.username, 'adam');
         test.equal(user.name, 'Adam');
-        test.equal(user.id, adamId);
+        test.equal(user.id.toString(), adamId.toString());
         
         test.done();
     });
@@ -92,7 +92,7 @@ exports['get users'] = function (test) {
         
         test.equal(users[0].username, 'adam');
         test.equal(users[0].name, 'Adam');
-        test.equal(users[0].id, adamId);
+        test.equal(users[0].id.toString(), adamId.toString());
         
         test.done();
     });
@@ -107,7 +107,7 @@ exports['update user name'] = function (test) {
         userService.getUserById(adamId, function (err, user) {
             test.ok(!err);
             test.ok(user);
-            test.equal(user.id, adamId);
+            test.equal(user.id.toString(), adamId.toString());
             test.equal(user.name, 'Adam Smith');
             test.equal(user.username, 'adam');
             

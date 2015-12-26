@@ -1,9 +1,11 @@
 
 var paymentService = require('../../services/payment');
+var db = require('../../utils/db');
 var dates = require('../../utils/dates');
 var async = require('simpleasync');
 
 var paymentId;
+var loanId;
 
 exports['clear payments'] = function (test) {
     test.async();
@@ -15,9 +17,11 @@ exports['clear payments'] = function (test) {
 };
 
 exports['new payment'] = function (test) {
+    loanId = db.newId();
+    
     test.async();
     
-    paymentService.newPayment({ loan: 1, order: 2, capital: 1000, interest: 100, date: "2015-12-12" }, function (err, id) {
+    paymentService.newPayment({ loan: loanId, order: 2, capital: 1000, interest: 100, date: "2015-12-12" }, function (err, id) {
         test.ok(!err);
         test.ok(id);
         paymentId = id;
@@ -33,11 +37,11 @@ exports['get payment by id'] = function (test) {
         test.ok(payment);
         test.equal(typeof payment, 'object');
         
-        test.equal(payment.loan, 1);
+        test.equal(payment.loan.toString(), loanId.toString());
         test.equal(payment.capital, 1000);
         test.equal(payment.interest, 100);
         test.equal(payment.order, 2);
-        test.equal(payment.id, paymentId);
+        test.equal(payment.id.toString(), paymentId.toString());
         test.ok(dates.isDateString(payment.date));
         test.equal(payment.date, "2015-12-12");
         
@@ -59,14 +63,14 @@ exports['get unknown payment by id'] = function (test) {
 exports['get payments by loan'] = function (test) {
     test.async();
     
-    paymentService.getPaymentsByLoan(1, function (err, payments) {
+    paymentService.getPaymentsByLoan(loanId, function (err, payments) {
         test.ok(!err);
         test.ok(payments);
         test.ok(Array.isArray(payments));
         test.equal(payments.length, 1);
         
-        test.equal(payments[0].loan, 1);
-        test.equal(payments[0].id, paymentId);
+        test.equal(payments[0].loan.toString(), loanId.toString());
+        test.equal(payments[0].id.toString(), paymentId.toString());
         
         test.done();
     });
@@ -94,8 +98,8 @@ exports['get payments'] = function (test) {
         test.ok(Array.isArray(payments));
         test.equal(payments.length, 1);
         
-        test.equal(payments[0].loan, 1);
-        test.equal(payments[0].id, paymentId);
+        test.equal(payments[0].loan.toString(), loanId.toString());
+        test.equal(payments[0].id.toString(), paymentId.toString());
         
         test.done();
     });
@@ -110,9 +114,9 @@ exports['update payment data'] = function (test) {
         paymentService.getPaymentById(paymentId, function (err, payment) {
             test.ok(!err);
             test.ok(payment);
-            test.equal(payment.id, paymentId);
+            test.equal(payment.id.toString(), paymentId.toString());
             test.equal(payment.description, 'A payment');
-            test.equal(payment.loan, 1);
+            test.equal(payment.loan.toString(), loanId.toString());
             
             test.done();
         });
