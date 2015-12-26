@@ -26,8 +26,7 @@ function loaddata(filename, cb) {
     .then(function (d, next) {
         users = d;
         each(data.loans, processLoan, cb);
-    })
-    .run();
+    });
 }
 
 function processUser(user, next) {

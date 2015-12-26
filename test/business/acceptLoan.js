@@ -163,8 +163,7 @@ exports['simulate loan payments'] = function (test) {
             sl.exist(payments, { loan: loanId, date: paymentDates[k - 1], order: k });
         
         test.done();
-    })
-    .run();
+    });
 }
 
 exports['accept loan'] = function (test) {
@@ -227,8 +226,7 @@ exports['accept loan'] = function (test) {
             sl.exist(data, { loan: loanId, date: paymentDates[k - 1], order: k });
         
         test.done();
-    })
-    .run();
+    });
 };
 
 exports['get no open loans'] = function (test) {
@@ -278,8 +276,7 @@ exports['get status without movements'] = function (test) {
         test.equal(data.movtotals.capital, 0);
         
         test.done();
-    })
-    .run();
+    });
 }
 
 exports['get status to date'] = function (test) {
@@ -315,7 +312,6 @@ exports['get status to date'] = function (test) {
         test.equal(data.totals.canceled, 0);
         
         test.done();
-    })
-    .run();
+    });
 }
 

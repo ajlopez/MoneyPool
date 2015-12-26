@@ -19,10 +19,9 @@ function listUsers(req, res) {
         translate.scorings(model.users);
         res.render('admin/userList', model);
     })
-    .fail(function (err) {
+    .error(function (err) {
         res.render('admin/error', { error: err });
-    })
-    .run();
+    });
 }
 
 function viewUser(req, res) {
@@ -55,10 +54,9 @@ function viewUser(req, res) {
 
         res.render('admin/userView', model);
     })
-    .fail(function (err) {
+    .error(function (err) {
         res.render('admin/error', { error: err });
-    })
-    .run();
+    });
 }
 
 function newUser(req, res) {

@@ -37,10 +37,9 @@ function createUser(req, res) {
         req.session.user = user;
         res.redirect('/user/data');
     })
-    .fail(function (err) {
+    .error(function (err) {
         res.render('error', { error: err });
-    })
-    .run();    
+    });    
 }
 
 function updateUser(req, res) {
@@ -52,10 +51,9 @@ function updateUser(req, res) {
     .then(function (user, next) {
         res.redirect('/my');
     })
-    .fail(function (err) {
+    .error(function (err) {
         res.render('error', { error: err });
-    })
-    .run();    
+    });    
 }
 
 function dataUser(req, res) {

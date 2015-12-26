@@ -119,8 +119,7 @@ exports['accept loan'] = function (test) {
         payments = data;
         
         test.done();
-    })
-    .run();
+    });
 };
 
 exports['make first payment'] = function (test) {
@@ -186,7 +185,6 @@ exports['make first payment'] = function (test) {
         })
         
         test.done();
-    })
-    .run();
+    });
 }
 

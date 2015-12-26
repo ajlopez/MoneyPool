@@ -110,8 +110,7 @@ exports['translate user'] = function (test) {
         test.ok(data);
         test.equal(data, user.username);
         test.done();
-    })
-    .run();
+    });
 };
 
 exports['translate users'] = function (test) {
@@ -148,8 +147,7 @@ exports['translate loan'] = function (test) {
         test.ok(data);
         test.equal(data, loan.code);
         test.done();
-    })
-    .run();
+    });
 };
 
 exports['translate loans'] = function (test) {

@@ -20,10 +20,9 @@ function listMovements(req, res) {
     .then(function (data, next) {
         res.render('admin/movementList', model);
     })
-    .fail(function (err) {
+    .error(function (err) {
         res.render('admin/error', { error: err });
-    })
-    .run();
+    });
 }
 
 module.exports = {

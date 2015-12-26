@@ -72,8 +72,7 @@ function newLoan(loan, cb) {
         loan.order = maxorder + 1;
         loan.code = user.username + '-' + strings.fillZeroes(loan.order, 4);
         store.add(loan, cb);
-    })
-    .run();
+    });
     
 };
 
@@ -97,8 +96,7 @@ function newNote(loanId, note, cb) {
     })
     .then(function (data, next) {
         cb(null, data);
-    })
-    .run();
+    });
 };
 
 function getLoanById(id, cb) {
@@ -158,10 +156,9 @@ function simulateLoanPayments(id, today, cb) {
         
         cb(null, payments);
     })
-    .fail(function (err) {
+    .error(function (err) {
         cb(err, null);
-    })
-    .run();
+    });
 }
 
 function acceptLoan(id, cb) {
@@ -221,8 +218,7 @@ function acceptLoan(id, cb) {
             
             paymentService.newPayment({ loan: loan.id, date: pdate, capital: pay.capital, interest: pay.interest, order: k }, next)
         }, cb);
-    })
-    .run();
+    });
 }
 
 function getLoanStatus(id, cb) {
@@ -253,8 +249,7 @@ function getLoanStatus(id, cb) {
         status.movtotals = totals;
         
         cb(null, status);
-    })
-    .run();
+    });
 }
 
 function getLoanStatusToDate(id, date, cb) {
@@ -313,8 +308,7 @@ function getLoanStatusToDate(id, date, cb) {
         status.dueInterest = finances.calculateInterest(status.dueCapital, status.loan.monthlyRate, dates.getDateDiffDays(lastDate, date));
         
         cb(null, status);
-    })
-    .run();
+    });
 }
 
 function doPayment(loanId, movdata, cb) {
@@ -368,8 +362,7 @@ function doPayment(loanId, movdata, cb) {
             
             movementService.newMovement(movement, next);
         }, cb);
-    })
-    .run();
+    });
 }
 
 module.exports = {

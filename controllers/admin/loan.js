@@ -23,10 +23,9 @@ function listLoans(req, res) {
     .then(function (data, next) {
         res.render('admin/loanList', model);
     })
-    .fail(function (err) {
+    .error(function (err) {
         res.render('admin/error', { error: err });
-    })
-    .run();
+    });
 }
 
 function viewLoan(req, res) {
@@ -89,10 +88,9 @@ function viewLoan(req, res) {
     .then(function (notes, next) {
         res.render('admin/loanView', model);
     })
-    .fail(function (err) {
+    .error(function (err) {
         res.render('admin/error', { error: err });
-    })
-    .run();
+    });
 }
 
 function newLoan(req, res) {

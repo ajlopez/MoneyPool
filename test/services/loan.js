@@ -170,6 +170,5 @@ exports['new and reject loan'] = function (test) {
         test.equal(data.status, 'rejected');
         test.ok(dates.isDateTimeString(data.rejected));
         test.done();
-    })
-    .run();
+    });
 };

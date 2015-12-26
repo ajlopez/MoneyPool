@@ -46,10 +46,9 @@ function viewMyUser(req, res) {
 
         res.render('my/userView', model);
     })
-    .fail(function (err) {
+    .error(function (err) {
         res.render('error', { error: err });
-    })
-    .run();
+    });
 }
 
 function viewOtherUser(req, res) {
@@ -80,10 +79,9 @@ function viewOtherUser(req, res) {
 
         res.render('my/otherUserView', model);
     })
-    .fail(function (err) {
+    .error(function (err) {
         res.render('error', { error: err });
-    })
-    .run();
+    });
 }
 
 function viewOtherLoan(req, res) {
@@ -146,10 +144,9 @@ function viewOtherLoan(req, res) {
     .then(function (notes, next) {
         res.render('my/otherLoanView', model);
     })
-    .fail(function (err) {
+    .error(function (err) {
         res.render('error', { error: err });
-    })
-    .run();
+    });
 }
 
 function listMyLoans(req, res) {
@@ -168,10 +165,9 @@ function listMyLoans(req, res) {
 
         res.render('my/loanList', model);
     })
-    .fail(function (err) {
+    .error(function (err) {
         res.render('error', { error: err });
-    })
-    .run();
+    });
 }
 
 function listMyMovements(req, res) {
@@ -191,10 +187,9 @@ function listMyMovements(req, res) {
     .then(function (data, next) {
         res.render('my/movementList', model);
     })
-    .fail(function (err) {
+    .error(function (err) {
         res.render('error', { error: err });
-    })
-    .run();
+    });
 }
 
 function newMyLoan(req, res) {
@@ -217,10 +212,9 @@ function createMyLoan(req, res) {
     .then(function (data, next) {
         res.redirect('/my/loan');
     })
-    .fail(function (err) {
+    .error(function (err) {
         res.render('error', { error: err });
-    })
-    .run();
+    });
 }
 
 function viewMyLoan(req, res) {
@@ -277,10 +271,9 @@ function viewMyLoan(req, res) {
     .then(function (notes, next) {
         res.render('my/loanView', model);
     })
-    .fail(function (err) {
+    .error(function (err) {
         res.render('error', { error: err });
-    })
-    .run();
+    });
 }
 
 function acceptMyLoan(req, res) {
@@ -302,10 +295,9 @@ function acceptMyLoan(req, res) {
     .then(function (loan, next) {
         res.redirect('/my/loan/' + id);
     })
-    .fail(function (err) {
+    .error(function (err) {
         res.render('error', { error: err });
-    })
-    .run();
+    });
 }
 
 function rejectMyLoan(req, res) {
@@ -327,10 +319,9 @@ function rejectMyLoan(req, res) {
     .then(function (loan, next) {
         res.redirect('/my/loan/' + id);
     })
-    .fail(function (err) {
+    .error(function (err) {
         res.render('error', { error: err });
-    })
-    .run();
+    });
 }
 
 function doInvest(req, res) {
@@ -349,10 +340,9 @@ function doInvest(req, res) {
         
         res.render('my/investList', model);
     })
-    .fail(function (err) {
+    .error(function (err) {
         res.render('error', { error: err });
-    })
-    .run();
+    });
 }
 
 function newNote(req, res) {
@@ -378,10 +368,9 @@ function createNote(req, res) {
     .then(function (data, next) {
         res.redirect('/my/oloan/' + loanId);
     })
-    .fail(function (err) {
+    .error(function (err) {
         res.render('error', { error: err });
-    })
-    .run();    
+    });    
 }
  
 function newPayment(req, res) {
@@ -405,10 +394,9 @@ function createPayment(req, res) {
     .then(function (data, next) {
         res.redirect('/my/loan/' + loanId);
     })
-    .fail(function (err) {
+    .error(function (err) {
         res.render('error', { error: err });
-    })
-    .run();    
+    });    
 } 
 
 module.exports = {
